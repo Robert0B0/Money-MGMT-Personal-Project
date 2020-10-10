@@ -1,0 +1,17 @@
+{% extends 'MGMT/main.html' %}
+
+{% block content %}
+
+
+
+<div class="display-4">Add a monetary actifity:</div>
+
+<div class="card card-body">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" name="Submit">
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'MGMT/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% include 'MGMT/status.html' %}
+
+<div class="display-4">Add a Goal:</div>
+
+<div class="card card-body">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" name="Submit">
+    </form>
+</div>
+
+{% endblock %}

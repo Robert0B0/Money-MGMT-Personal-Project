@@ -1,0 +1,45 @@
+{% extends 'MGMT/main.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm">
+        <div class="card card-body">
+            <div class="display-2"><a href="{% url 'act_form' %}">Add Activity</a></div>
+        </div>
+    </div>
+    <div class="col-sm">
+        {% include 'MGMT/status.html' %}
+    </div>
+</div>
+
+
+<div class="col-xl">
+    <div class="display-4">Activities: </div>
+    <div class="card card-body">
+        <table class="table table-striped table-hover table-secondary">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Descriprion</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Remove</th>
+                </tr>
+            </thead>
+            {% for activity in activities %}
+                <tr>
+                    <td>{{activity.category}}</td>
+                    <td>{{activity.naming}}</td>
+                    <td>€{{activity.amount}}</td>
+                    <td>{{activity.date_created}}</td>
+                    <td><a  class="btn btn-sm btn-info" href="{% url 'update_act' activity.id %}">Update</a></td>
+                    <td><a  class="btn btn-sm btn-danger" href="{% url 'delete_act' activity.id %}">Delete</a></td>>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock %}
