@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class moneyUser(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
-    balance = models.DecimalField(null=False, max_digits=7, decimal_places=2)
+    worth = models.DecimalField(null=False, max_digits=7, decimal_places=2)
     email = models.EmailField(max_length=200, null=True)
     profile_pic = models.ImageField(default="default_money_user.png", null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)

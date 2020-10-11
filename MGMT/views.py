@@ -1,13 +1,30 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Sum
 
 from .models import *
 from .forms import *
 
 
+#==================| global variables |==================================
 
 
+activities = moneyActivity.objects.all()
+goals = moneyGoals.objects.all()
+user_name = moneyUser.objects.get(pk=1).name
+total_activities = activities.count()
+total_goals = goals.count()
+
+wallet = moneyUser.objects.get(pk=1).worth
+user_name = moneyUser.objects.get(pk=1).name
+total_activities = activities.count()
+total_goals = goals.count()
+
+total_out = moneyActivity.objects.aggregate(Sum('amount'))
+total_amount_out = total_out['amount__sum']
+    
+balance = wallet - total_amount_out
 
 #=================| ACCOUNT SETTINGS |=========================================
 def settingsPage(request):
@@ -18,62 +35,31 @@ def settingsPage(request):
 #=================| Status PAGE |=========================================
 
 def statusPage(request):
-    activities = moneyActivity.objects.all()
-    goals = moneyGoals.objects.all()
-
-    user_name = moneyUser.objects.get(pk=1).name
-    wallet = moneyUser.objects.get(pk=1).balance
-
-    total_activities = activities.count()
-    total_goals = goals.count()
 
     context = {'activities': activities, 'goals': goals, 
     'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'wallet': wallet}
-
-    context={'activities': activities, 'goals': goals, 
-    'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'wallet': wallet}
+    'user_name': user_name, 'balance': balance}
 
     return render(request, 'status.html', context)
 
 #=================| HOME PAGE |=========================================
 
 def homePage(request):
-    activities = moneyActivity.objects.all()
-    goals = moneyGoals.objects.all()
-
-    user_name = moneyUser.objects.get(pk=1).name
-    wallet = moneyUser.objects.get(pk=1).balance
-
-    total_activities = moneyActivity.objects.all().count()
-    total_goals = moneyGoals.objects.all().count()
-
     context = {'activities': activities, 'goals': goals, 
     'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'wallet': wallet}
+    'user_name': user_name, 'balance': balance}
 
     return render(request, 'MGMT/home.html', context)
 
 #=================| MONETARY ACTIVITY |=========================================
 
 def actPage(request):
-    activities = moneyActivity.objects.all()
-    goals = moneyGoals.objects.all()
-
-    user_name = moneyUser.objects.get(pk=1).name
-    wallet = moneyUser.objects.get(pk=1).balance
-
-    total_activities = activities.count()
-    total_goals = goals.count()
+    total_val = moneyActivity.objects.aggregate(Sum('amount'))
+    total_amount = total_val['amount__sum']
 
     context = {'activities': activities, 'goals': goals, 
     'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'wallet': wallet}
-
-    context={'activities': activities, 'goals': goals, 
-    'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'wallet': wallet}
+    'user_name': user_name, 'wallet': wallet, 'total_amount' : total_amount}
 
     return render(request, 'MGMT/act_page.html', context)
 
@@ -83,6 +69,7 @@ def createAct(request):
         form = ActivityForm(request.POST)
         if form.is_valid:
             form.save()
+
             return redirect('/')
 
     context = {'form': form}
@@ -116,22 +103,9 @@ def deleteAct(request, pk):
 #=================| GOALS |=========================================
 
 def goalsPage(request):
-    activities = moneyActivity.objects.all()
-    goals = moneyGoals.objects.all()
-
-    user_name = moneyUser.objects.get(pk=1).name
-    wallet = moneyUser.objects.get(pk=1).balance
-
-    total_activities = activities.count()
-    total_goals = goals.count()
-
     context = {'activities': activities, 'goals': goals, 
     'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'wallet': wallet}
-
-    context={'activities': activities, 'goals': goals, 
-    'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'wallet': wallet}
+    'user_name': user_name, 'balance': balance}
 
     return render(request, 'MGMT/goals_page.html', context)
 
@@ -174,22 +148,9 @@ def deleteGoal(request, pk):
 #=================| GRAPHS |=========================================
 
 def graphPage(request):
-    activities = moneyActivity.objects.all()
-    goals = moneyGoals.objects.all()
-
-    user_name = moneyUser.objects.get(pk=1).name
-    wallet = moneyUser.objects.get(pk=1).balance
-
-    total_activities = activities.count()
-    total_goals = goals.count()
-
     context = {'activities': activities, 'goals': goals, 
     'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'wallet': wallet}
-
-    context={'activities': activities, 'goals': goals, 
-    'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'wallet': wallet}
+    'user_name': user_name, 'balance': balance}
 
     return render(request, 'MGMT/graph.html', context)
 
