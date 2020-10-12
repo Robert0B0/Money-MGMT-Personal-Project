@@ -8,14 +8,11 @@
 <div class="row">
     <div class="col-sm">
         <div class="card card-body special-card">
-            <div class="display-4"><a href="{% url 'record_form' %}">Add Record</a></div>
+            <div class="display-4"><a href="{% url 'record_form' user.id %}">Add a Record</a></div>
         </div>
         <div class="card card-body special-card">
             <div class="display-4"><a href="{% url 'goal_form' %}">Add a Goal</a></div>
         </div>
-    </div>
-    <div class="col-sm">
-        {% include 'MGMT/status.html' %}
     </div>
 </div>
 

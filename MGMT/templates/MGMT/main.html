@@ -28,17 +28,21 @@
 <body>
     {% include 'MGMT/navbar.html' %}
     <div class="container-fluid">
-
-        <div class="card card-body special-card">
-            <div class="row">
-                <div class="col-xl">
-                    <div class="card bg-light"  style="max-width: 30rem;">
-                        <div class="display-4">{{user_name}},</div>
-                        <div class="display-4">Balance: ${{balance|floatformat:2}}</div>
+        <div class="row">
+            <div class="col-2">
+                <div class="card card-body special-card">
+                    <div class="row">
+                        <div class="col-xl">
+                            <div class="card bg-light"  style="max-width: 30rem;">
+                                <div class="display-4">{{user_name}},</div>
+                                <div class="display-4">Balance: ${{balance|floatformat:2}}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        
 
         {% block content %}
 

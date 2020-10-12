@@ -6,14 +6,20 @@
 
 {% include 'MGMT/status.html' %}
 
-<div class="display-4">Add a Goal:</div>
-
 <div class="card card-body">
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{form}}
-        <input type="submit" name="Submit">
-    </form>
+    <div class="display-4">Add a Goal:</div>
+    <hr>
+    <div class="card card-body">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input class="btn btn-outline-secondary" type="submit" name="Submit">
+            <a class="btn btn-outline-secondary" href="{% url 'goals_page' %}">Cancel</a>
+        </form>
+    </div>
 </div>
+
+
+
 
 {% endblock %}

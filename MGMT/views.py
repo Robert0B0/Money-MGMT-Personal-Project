@@ -92,8 +92,9 @@ def recordPage(request):
 
     return render(request, 'MGMT/record_page.html', context)
 
-def createRecord(request):
-    form = RecordForm()
+def createRecord(request, pk):
+    user = moneyUser.objects.get(id=pk)
+    form = RecordForm(initial={'user': user})
     if request.method == 'POST':
         form = RecordForm(request.POST)
         if form.is_valid:

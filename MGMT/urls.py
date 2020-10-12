@@ -13,7 +13,7 @@ urlpatterns = [
     path('', views.homePage, name="home"),
     
     path('records/', views.recordPage, name="record_page"),
-    path('record_form/', views.createRecord, name="record_form"),
+    path('record_form/<str:pk>/', views.createRecord, name="record_form"),
     path('update_record/<str:pk>/', views.updateRecord, name="update_record"),
     path('delete_record/<str:pk>/', views.deleteRecord, name="delete_record"),
 

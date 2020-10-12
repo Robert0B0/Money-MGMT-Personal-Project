@@ -9,11 +9,13 @@ class RecordForm(ModelForm):
     class Meta:
         model = moneyRecord
         fields = '__all__'
+        #fields = ['naming', 'category', 'amount']
 
 class GoalForm(ModelForm):
     class Meta:
         model = moneyGoals
         fields = '__all__'
+        #fields = ['naming', 'category', 'amount', 'due_date']
 
 #class createUserForm(UserCreationForm):
 #    class Meta:
