@@ -10,21 +10,19 @@ from .forms import *
 #==================| global variables |==================================
 
 
-activities = moneyActivity.objects.all()
-goals = moneyGoals.objects.all()
-user_name = moneyUser.objects.get(pk=1).name
-total_activities = activities.count()
-total_goals = goals.count()
-
-wallet = moneyUser.objects.get(pk=1).worth
-user_name = moneyUser.objects.get(pk=1).name
-total_activities = activities.count()
-total_goals = goals.count()
-
-total_out = moneyActivity.objects.aggregate(Sum('amount'))
-total_amount_out = total_out['amount__sum']
-    
-balance = wallet - total_amount_out
+#records = moneyRecord.objects.all()
+#goals = moneyGoals.objects.all()
+#total_records = records.count()
+#total_goals = goals.count()
+#
+#user_name = moneyUser.objects.get(pk=1).name
+#wallet = moneyUser.objects.get(pk=1).worth
+#
+#
+#total_out = moneyRecord.objects.filter(category='Outcome').aggregate(Sum('amount'))
+#total_amount_out = total_out['amount__sum']
+#    
+#balance = wallet
 
 #=================| ACCOUNT SETTINGS |=========================================
 def settingsPage(request):
@@ -36,8 +34,8 @@ def settingsPage(request):
 
 def statusPage(request):
 
-    context = {'activities': activities, 'goals': goals, 
-    'total_activities': total_activities, 'total_goals': total_goals,
+    context = {'records': records, 'goals': goals, 
+    'total_records': total_records, 'total_goals': total_goals,
     'user_name': user_name, 'balance': balance}
 
     return render(request, 'status.html', context)
@@ -45,28 +43,59 @@ def statusPage(request):
 #=================| HOME PAGE |=========================================
 
 def homePage(request):
-    context = {'activities': activities, 'goals': goals, 
-    'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'balance': balance}
+    records = moneyRecord.objects.all()
+    goals = moneyGoals.objects.all()
+    total_records = records.count()
+    total_goals = goals.count()
+
+    user_name = moneyUser.objects.get(pk=1).name
+    wallet = moneyUser.objects.get(pk=1).worth
+
+    total_out = moneyRecord.objects.filter(category='Outcome').aggregate(Sum('amount'))
+    total_amount_out = total_out['amount__sum']
+
+    balance = wallet
+
+    context = {'records': records, 'total_records':total_records, 'goals': goals, 'total_goals': total_goals, 
+        'user_name': user_name, 'balance': balance}
 
     return render(request, 'MGMT/home.html', context)
 
-#=================| MONETARY ACTIVITY |=========================================
+#=================| MONETARY Record |=========================================
 
-def actPage(request):
-    total_val = moneyActivity.objects.aggregate(Sum('amount'))
-    total_amount = total_val['amount__sum']
+def recordPage(request):
+    records = moneyRecord.objects.all()
+    goals = moneyGoals.objects.all()
+    total_records = records.count()
+    total_goals = goals.count()
 
-    context = {'activities': activities, 'goals': goals, 
-    'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'wallet': wallet, 'total_amount' : total_amount}
+    user_name = moneyUser.objects.get(pk=1).name
+    wallet = moneyUser.objects.get(pk=1).worth
 
-    return render(request, 'MGMT/act_page.html', context)
+    total_out = moneyRecord.objects.filter(category='Outcome').aggregate(Sum('amount'))
+    total_amount_out = total_out['amount__sum']
 
-def createAct(request):
-    form = ActivityForm()
+    balance = wallet
+
+    total_expenses = moneyRecord.objects.filter(category='expenses').aggregate(Sum('amount'))['amount__sum']
+    total_upkeep = moneyRecord.objects.filter(category='upkeep').aggregate(Sum('amount'))['amount__sum']
+    total_unforeseen = moneyRecord.objects.filter(category='unforeseen').aggregate(Sum('amount'))['amount__sum']
+
+    total_income = moneyRecord.objects.filter(category='monthly income').aggregate(Sum('amount'))['amount__sum']
+    total_dividents = moneyRecord.objects.filter(category='dividents').aggregate(Sum('amount'))['amount__sum']
+    total_in_other = moneyRecord.objects.filter(category='other').aggregate(Sum('amount'))['amount__sum']
+
+    context = {'records': records, 'total_records':total_records, 'goals': goals, 'total_goals': total_goals, 
+        'user_name': user_name, 'balance': balance, 
+        'total_expenses' : total_expenses, 'total_upkeep': total_upkeep, 'total_unforeseen': total_unforeseen,
+        'total_income': total_income, 'total_dividents': total_dividents, 'total_in_other': total_in_other}
+
+    return render(request, 'MGMT/record_page.html', context)
+
+def createRecord(request):
+    form = RecordForm()
     if request.method == 'POST':
-        form = ActivityForm(request.POST)
+        form = RecordForm(request.POST)
         if form.is_valid:
             form.save()
 
@@ -74,38 +103,50 @@ def createAct(request):
 
     context = {'form': form}
 
-    return render(request, 'MGMT/act_form.html', context)
+    return render(request, 'MGMT/record_form.html', context)
 
-def updateAct(request, pk):
-    act = moneyActivity.objects.get(id=pk)
-    form = ActivityForm(instance=act)
+def updateRecord(request, pk):
+    act = moneyRecord.objects.get(id=pk)
+    form = RecordForm(instance=act)
     if request.method == 'POST':
-        form = ActivityForm(request.POST, instance=act)
+        form = RecordForm(request.POST, instance=act)
         if form.is_valid:
             form.save()
-            return redirect('/activities/')
+            return redirect('/records/')
 
     context = {'form': form}
 
-    return render(request, 'MGMT/act_form.html', context) 
+    return render(request, 'MGMT/record_form.html', context) 
 
-def deleteAct(request, pk):
-    activity = moneyActivity.objects.get(id=pk)
+def deleteRecord(request, pk):
+    record = moneyRecord.objects.get(id=pk)
     if request.method == 'POST':
-        activity.delete()
-        return redirect('/activities/') 
-    context ={'activity': activity}
+        record.delete()
+        return redirect('/records/') 
+    context ={'record': record}
 
-    return render(request, 'MGMT/act_delete.html', context)
+    return render(request, 'MGMT/record_delete.html', context)
 
 
 
 #=================| GOALS |=========================================
 
 def goalsPage(request):
-    context = {'activities': activities, 'goals': goals, 
-    'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'balance': balance}
+    records = moneyRecord.objects.all()
+    goals = moneyGoals.objects.all()
+    total_records = records.count()
+    total_goals = goals.count()
+
+    user_name = moneyUser.objects.get(pk=1).name
+    wallet = moneyUser.objects.get(pk=1).worth
+
+    total_out = moneyRecord.objects.filter(category='Outcome').aggregate(Sum('amount'))
+    total_amount_out = total_out['amount__sum']
+
+    balance = wallet
+
+    context = {'records': records, 'total_records':total_records, 'goals': goals, 'total_goals': total_goals, 
+        'user_name': user_name, 'balance': balance}
 
     return render(request, 'MGMT/goals_page.html', context)
 
@@ -148,9 +189,21 @@ def deleteGoal(request, pk):
 #=================| GRAPHS |=========================================
 
 def graphPage(request):
-    context = {'activities': activities, 'goals': goals, 
-    'total_activities': total_activities, 'total_goals': total_goals,
-    'user_name': user_name, 'balance': balance}
+    records = moneyRecord.objects.all()
+    goals = moneyGoals.objects.all()
+    total_records = records.count()
+    total_goals = goals.count()
+
+    user_name = moneyUser.objects.get(pk=1).name
+    wallet = moneyUser.objects.get(pk=1).worth
+
+    total_out = moneyRecord.objects.filter(category='Outcome').aggregate(Sum('amount'))
+    total_amount_out = total_out['amount__sum']
+
+    balance = wallet
+    
+    context = {'records': records, 'total_records':total_records, 'goals': goals, 'total_goals': total_goals, 
+        'user_name': user_name, 'balance': balance}
 
     return render(request, 'MGMT/graph.html', context)
 

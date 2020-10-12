@@ -5,9 +5,9 @@ from django import forms
 
 from .models import *
 
-class ActivityForm(ModelForm):
+class RecordForm(ModelForm):
     class Meta:
-        model = moneyActivity
+        model = moneyRecord
         fields = '__all__'
 
 class GoalForm(ModelForm):

@@ -6,4 +6,4 @@ from .models import *
 
 admin.site.register(moneyUser)
 admin.site.register(moneyGoals)
-admin.site.register(moneyActivity)
+admin.site.register(moneyRecord)

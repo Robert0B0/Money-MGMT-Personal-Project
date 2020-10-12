@@ -25,7 +25,7 @@ class moneyGoals(models.Model):
     user = models.ForeignKey(moneyUser, null=True, on_delete=models.SET_NULL)
     naming = models.CharField(max_length=200, null=False)
     category = models.CharField(max_length=200, null=False, choices=CATEGORY, default='Small Goal')
-    amount = models.DecimalField(null=False, max_digits=7, decimal_places=2)
+    amount = models.DecimalField(null=False, max_digits=10, decimal_places=2)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     due_date = models.DateTimeField(auto_now_add=False, null=True)
     calculated_date = models.DateTimeField(auto_now_add=True, null=True)
@@ -33,7 +33,7 @@ class moneyGoals(models.Model):
     def __str__(self):
         return str(self.naming)
 
-class moneyActivity(models.Model):
+class moneyRecord(models.Model):
     CATEGORY = (
                 ('Outcome', (
                             ('expenses', 'Expenses'),
@@ -52,7 +52,7 @@ class moneyActivity(models.Model):
     user = models.ForeignKey(moneyUser, null=True, on_delete=models.SET_NULL)
     naming = models.CharField(max_length=200, null=False, blank=True, default="Expenses")
     category = models.CharField(max_length=200, null=False, choices=CATEGORY, default='Outcome')
-    amount = models.DecimalField(null=False, max_digits=5, decimal_places=2)
+    amount = models.DecimalField(null=False, max_digits=10, decimal_places=2)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):

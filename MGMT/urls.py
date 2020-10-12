@@ -12,10 +12,10 @@ urlpatterns = [
 
     path('', views.homePage, name="home"),
     
-    path('activities/', views.actPage, name="act_page"),
-    path('activity_form/', views.createAct, name="act_form"),
-    path('update_activity/<str:pk>/', views.updateAct, name="update_act"),
-    path('delete_activity/<str:pk>/', views.deleteAct, name="delete_act"),
+    path('records/', views.recordPage, name="record_page"),
+    path('record_form/', views.createRecord, name="record_form"),
+    path('update_record/<str:pk>/', views.updateRecord, name="update_record"),
+    path('delete_record/<str:pk>/', views.deleteRecord, name="delete_record"),
 
     path('goals/', views.goalsPage, name="goals_page"),
     path('goal_form/', views.createGoal, name="goal_form"),
