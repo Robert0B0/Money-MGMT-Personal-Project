@@ -4,22 +4,10 @@
 
 {% block content %}
 
-
-<div class="row">
-    <div class="col-sm">
-        <div class="card card-body special-card">
-            <div class="display-4"><a href="{% url 'record_form' user.id %}">Add a Record</a></div>
-        </div>
-        <div class="card card-body special-card">
-            <div class="display-4"><a href="{% url 'goal_form' %}">Add a Goal</a></div>
-        </div>
-    </div>
-</div>
-
 <div class="row">
     <div class="col-xl">
         <div class="card card-body special-card">
-            <div class="display-4">Records: {{total_records}}</div>
+            <div class="display-4"><a class="btn btn-outline-primary btn-lg" href="{% url 'record_form' user.id %}">Add a Record</a> Records: {{total_records}} total</div>
         </div>
         <div class="card card-body special-card">
             <table class="table table_id table-striped table-hover table-secondary">
@@ -46,7 +34,7 @@
     </div>
     <div class="col-md-4">
         <div class="card card-body special-card">
-            <div class="display-4">Goals: {{total_goals}}</div>
+            <div class="display-4"><a class="btn btn-outline-primary btn-lg" href="{% url 'goal_form' %}">Add a Goal</a> Goals: {{total_goals}} total</div>
         </div>
         <div class="card card-body special-card">
             <table class="table table_id table-striped table-hover table-secondary">

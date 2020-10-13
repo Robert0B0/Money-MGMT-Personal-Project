@@ -186,6 +186,19 @@ def deleteGoal(request, pk):
 
     return render(request, 'MGMT/goal_delete.html', context)
 
+#=================| SAVINGS |=========================================
+
+
+def savingsPage(request):
+    context = {}
+
+    return render(request, 'MGMT/savings_page.html', context)
+
+def createSaving(request):
+    context = {}
+
+    return render(request, 'MGMT/savings_page.html', context)
+
 
 #=================| GRAPHS |=========================================
 

@@ -4,18 +4,9 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col-sm">
-        <div class="card card-body special-card">
-            <div class="display-2"><a href="{% url 'goal_form' %}">Add a Goal</a></div>
-        </div>
-    </div>
-</div>
-
-
 <div class="col-xl">
     <div class="card card-body special-card">
-        <div class="display-4">Goals: {{total_goals}}</div>
+        <div class="display-4"><a class="btn btn-outline-primary btn-lg" href="{% url 'goal_form' %}">Add a Goal</a> Goals: {{total_goals}} total</div>
     </div>
     
     <div class="card card-body special-card">

@@ -4,20 +4,11 @@
 
 {% block content %}
 
-
-<div class="row">
-    <div class="col-sm">
-        <div class="card card-body special-card">
-            <div class="display-2"><a href="{% url 'record_form' user.id %}">Add a Record</a></div>
-        </div>
-    </div>
-</div>
-
-
 <div class="col-xl">
     
     <div class="card card-body special-card">
-        <div class="display-3">Records: {{ total_records }} total</div>
+        <div class="display-4"><a class="btn btn-outline-primary btn-lg" href="{% url 'record_form' user.id %}">Add a Record</a> Records: {{total_records}} total</div>
+        <hr>
         <div class="row">
             <div class="col">
                 <div class="display-4">Outcome: </div>

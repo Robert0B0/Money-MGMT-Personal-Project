@@ -9,7 +9,7 @@
 
 <style>
     body {
-        background: url("/static/images/Business-Finance-1.jpg") fixed;
+        background: url("/static/images/finances-3.jpg") fixed;
         
     }
     .special-card {
@@ -27,21 +27,25 @@
 </head>
 <body>
     {% include 'MGMT/navbar.html' %}
-    <div class="container-fluid">
+
         <div class="row">
-            <div class="col-2">
-                <div class="card card-body special-card">
-                    <div class="row">
-                        <div class="col-xl">
-                            <div class="card bg-light"  style="max-width: 30rem;">
-                                <div class="display-4">{{user_name}},</div>
-                                <div class="display-4">Balance: ${{balance|floatformat:2}}</div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="col">
+                <div class="card card-body special-card"  style="left: 10px">
+                    <div class="display-4">Message for the moment:</div>
+                    <div class="display-4">(...Message...)</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card card-body special-card"  style="right: 10px">
+                    <div class="display-4">{{user_name}},</div>
+                    <div class="display-4">Balance: ${{balance|floatformat:2}}</div>
                 </div>
             </div>
         </div>
+                
+
+        
+ 
         
 
         {% block content %}

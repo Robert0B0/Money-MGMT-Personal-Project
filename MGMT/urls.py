@@ -22,6 +22,9 @@ urlpatterns = [
     path('update_goal/<str:pk>/', views.updateGoal, name="update_goal"),
     path('delete_goal/<str:pk>/', views.deleteGoal, name="delete_goal"),
 
+    path('savings', views.savingsPage, name="savings_page"),
+    path('saving_form', views.createSaving, name="savings_form"),
+
     path('graph/', views.graphPage, name="graphs"),
 
 
