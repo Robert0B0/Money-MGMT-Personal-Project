@@ -1,5 +1,7 @@
 {% extends 'MGMT/main.html' %}
 
+{% load static %}
+
 {% block content %}
 
 
@@ -11,7 +13,17 @@
     <hr>
     <form action="" method="POST">
         {% csrf_token %}
-        {{form}}
+        <div style="display: none;">
+            {{ form.user }}
+        </div>
+        <div class="card card-body special-card">
+            <div class="display-5">Naming: {{ form.naming }}</div>
+            <hr>
+            <div class="display-5">Category: {{ form.category }}</div>
+            <hr>
+            <div class="display-5">Amount: {{ form.amount }}</div>
+            <hr>
+        </div>
         <input class="btn btn-outline-secondary" type="submit" name="Submit">
         <a class="btn btn-outline-secondary" href="{% url 'record_page' %}">Cancel</a>
     </form>

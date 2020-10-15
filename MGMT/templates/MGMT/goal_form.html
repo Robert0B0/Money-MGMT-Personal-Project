@@ -4,7 +4,7 @@
 
 {% block content %}
 
-{% include 'MGMT/status.html' %}
+
 
 <div class="card card-body">
     <div class="display-4">Add a Goal:</div>
@@ -12,7 +12,19 @@
     <div class="card card-body">
         <form action="" method="POST">
             {% csrf_token %}
-            {{form}}
+            <div style="display: none;">
+                {{ form.user }}
+            </div>
+            <div class="card card-body special-card">
+                <div class="display-5">Naming: {{ form.naming }}</div>
+                <hr>
+                <div class="display-5">Category: {{ form.category }}</div>
+                <hr>
+                <div class="display-5">Amount: {{ form.amount }}</div>
+                <hr>
+                <div class="display-5">Due Date: {{ form.due_date }}</div>
+                <hr>
+            </div>
             <input class="btn btn-outline-secondary" type="submit" name="Submit">
             <a class="btn btn-outline-secondary" href="{% url 'goals_page' %}">Cancel</a>
         </form>

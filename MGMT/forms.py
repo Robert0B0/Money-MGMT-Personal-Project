@@ -17,7 +17,7 @@ class GoalForm(ModelForm):
         fields = '__all__'
         #fields = ['naming', 'category', 'amount', 'due_date']
 
-#class createUserForm(UserCreationForm):
-#    class Meta:
-#        model = moneyUser
-#        fields = ['username', 'email', 'password1', 'password2']
+class CreateUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
