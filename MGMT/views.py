@@ -74,11 +74,38 @@ def logoutUser(request):
     return redirect('login_page')
 
 @login_required(login_url='login_page')
-@admin_only
+@allowed_users(allowed_roles=['admins','money_users'])
 def settingsPage(request):
-    context = {}
+    records = request.user.moneyuser.moneyrecord_set.all()
+    goals = request.user.moneyuser.moneygoals_set.all()
+    total_records = records.count()
+    total_goals = goals.count()
 
-    return render(request, 'MGMT/settings.html', context)
+    user_name = request.user.username
+    wallet = request.user.moneyuser.worth
+
+    total_out = request.user.moneyuser.moneyrecord_set.filter(category='expenses').filter(category='upkeep').aggregate(Sum('amount'))['amount__sum']
+    total_in = request.user.moneyuser.moneyrecord_set.filter(category='monthly income').aggregate(Sum('amount'))['amount__sum']
+    if total_out is None:
+        total_out = 0
+    if total_in is None:
+        total_in = 0
+    
+    balance = wallet - total_out + total_in
+
+    moneyuser = request.user.moneyuser
+    form = MoneyUserForm(instance=moneyuser)
+
+    if request.method == 'POST':
+        form = MoneyUserForm(request.POST, request.FILES, instance=moneyuser)
+        if form.is_valid:
+            form.save()
+    
+    
+    context = {'form': form, 'records': records, 'total_records':total_records, 'goals': goals, 'total_goals': total_goals, 
+        'user_name': user_name, 'balance': balance}
+
+    return render(request, 'MGMT/user_settings.html', context)
 
 
 

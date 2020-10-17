@@ -4,64 +4,80 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col-xl">
-        <div class="card card-body special-card">
-            <div class="display-4"><a class="btn btn-outline-primary btn-lg" href="{% url 'record_form' user.id %}">Add a Record</a> Records: {{total_records}} total</div>
-        </div>
-        <div class="card card-body special-card">
-            <table class="table table_id table-striped table-hover table-secondary">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Type</th>
-                        <th scope="col">Descriprion</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for record in records %}
-                        <tr>
-                            <td>{{record.category}}</td>
-                            <td>{{record.naming}}</td>
-                            <td>€{{record.amount}}</td>
-                            <td>{{record.date_created}}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card card-body special-card">
-            <div class="display-4"><a class="btn btn-outline-primary btn-lg" href="{% url 'goal_form' %}">Add a Goal</a> Goals: {{total_goals}} total</div>
-        </div>
-        <div class="card card-body special-card">
-            <table class="table table_id table-striped table-hover table-secondary">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Type</th>
-                        <th scope="col">Descriprion</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Due_Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for goal in goals %}
-                        <tr>
-                            <td>{{goal.category}}</td>
-                            <td>{{goal.naming}}</td>
-                            <td>${{goal.amount}}</td>
-                            <td>{{goal.due_date}}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-                
-            </table>
-        </div>
-    </div>
 
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl">
+            <div class="card card-body special-card text-center">
+                <div class="display-4">Records: {{total_records}} total, 
+                    <a class="btn btn-outline-primary btn-lg" href="{% url 'record_form' user.id %}">Add a Record</a> 
+                </div>
+            </div>
+            <div class="card card-body special-card">
+                <table class="table table_id table-striped table-hover table-secondary">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Type</th>
+                            <th scope="col">Descriprion</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                            <tr>
+                                <td>{{record.category}}</td>
+                                <td>{{record.naming}}</td>
+                                <td>€{{record.amount}}</td>
+                                <td>{{record.date_created}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="card-body">
+                    <a class="btn btn-outline-secondary btn-lg" href="{% url 'record_page' %}">Go to Records page.</a> 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-body special-card">
+                <div class="display-4">Goals: {{total_goals}} total, 
+                    <a class="btn btn-outline-primary btn-lg" href="{% url 'goal_form' %}">Add a Goal</a> 
+                </div>
+            </div>
+            <div class="card card-body special-card">
+                <table class="table table_id table-striped table-hover table-secondary">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Type</th>
+                            <th scope="col">Descriprion</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Due_Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for goal in goals %}
+                            <tr>
+                                <td>{{goal.category}}</td>
+                                <td>{{goal.naming}}</td>
+                                <td>${{goal.amount}}</td>
+                                <td>{{goal.due_date}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    
+                </table>
+                <div class="card-body">
+                    <a class="btn btn-outline-secondary btn-lg" href="{% url 'goals_page' %}">Go to Goals page.</a> 
+                </div>
+            </div>
+        </div>
+    
+    </div>
 </div>
+
+
 
 {% endblock %}
 {% block js %}

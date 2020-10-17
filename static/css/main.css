@@ -1,17 +1,13 @@
-body{
-    background-image: url('D:\\programs\\010 Programming learning\\Money_MGMT\\static\\images\\Business-Finance-1.jpg');
-
+body {
+    background: url("/static/images/finances-4.jpg") fixed;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .special-card {
-    /* create a custom class so you 
-       do not run into specificity issues 
-       against bootstraps styles
-       which tends to work better than using !important 
-       (future you will thank you later)*/
-    
-      background-color: rgba(245, 245, 245, 1);
-      opacity: .8;
+        background-color: rgb(203, 206, 223);
+        opacity: .8;
 }
-
 

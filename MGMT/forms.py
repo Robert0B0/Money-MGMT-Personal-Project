@@ -5,6 +5,12 @@ from django import forms
 
 from .models import *
 
+class MoneyUserForm(ModelForm):
+    class Meta:
+        model = moneyUser
+        fields = '__all__'
+        exclude = ['user']
+
 class RecordForm(ModelForm):
     class Meta:
         model = moneyRecord

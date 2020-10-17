@@ -4,11 +4,11 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class moneyUser(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True, default='Username')
     worth = models.DecimalField(null=False, max_digits=7, decimal_places=2, default=10.00)
     email = models.EmailField(max_length=200, null=True, default='mail@mail.mail')
-    profile_pic = models.ImageField(default="default_money_user.png", null=True, blank=True)
+    profile_pic = models.ImageField(default="profile-default.png", null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):

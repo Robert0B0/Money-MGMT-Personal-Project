@@ -5,62 +5,95 @@
 <head>
     <title>Money Management</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    
     <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">
-
-<style>
-    body {
-        background: url("/static/images/finances-4.jpg") fixed;
-        height: 100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-    .special-card {
-        /* create a custom class so you 
-           do not run into specificity issues 
-           against bootstraps styles
-           which tends to work better than using !important 
-           (future you will thank you later)*/
-        
-          background-color: rgb(173, 255, 184);
-          opacity: .9;
-    }
-</style>
-
 </head>
+
+
 <body>
     {% include 'MGMT/navbar.html' %}
 
-        <div class="row">
-            <div class="col">
-                <div class="card card-body special-card"  style="left: 10px">
-                    <div class="display-4">Message for the moment:</div>
-                    <div class="display-4">(...Message...)</div>
-                </div>
+    <div class="container-fluid ">
+        <hr>
+        <div class="row justify-content-between">
+            <div class="col-5">
+              <div class="card special-card text-center">
+                  <div class="card-title display-4">Message for the moment</div>
+                  <hr>
+                  <div class="card-title display-4">Message</div>
+              </div>
             </div>
-            <div class="col">
-                <div class="card card-body special-card"  style="right: 10px">
-                    <div class="display-4">{{request.user}},</div>
-                    <div class="display-4">${{balance|floatformat:2}}</div>
-                </div>
+            <div class="col-4">
+              <div class="card special-card text-center">
+                  <div class="card-title display-4">{{request.user}},  <a href="{% url 'user-settings' %}" class="btn btn-outline-secondary btn-lg">User settings</a></div>
+                  <hr>
+                  <div class="card-title display-4">Ballance: ${{balance|floatformat:2}}</div>
+              </div>
             </div>
+          </div>
+          <hr>
         </div>
-                
+    
 
-        
- 
+    <!--
+        <div class="container">
+       <div class="row">
+        <div class="card special-card" style="width: 48rem;">
+            <div class="card-body">
+              <h5 class="card-title display-4">Message for the moment</h5>
+              <p class="card-text display-5">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="#" class="btn btn-outline-primary btn-lg">Go somewhere</a>
+            </div>
+          </div>
+           <div class="col-sm">
+            <div class="card special-card" style="width: 28rem; height: 12rem;">
+                <div class="card-body">
+                  <h5 class="card-title display-4">{{request.user}},  <a href="#" class="btn btn-outline-primary btn-lg">User settings</a></h5>
+
+                    <div class="card-title display-4">${{balance|floatformat:2}}</div>
+
+                  <div class="card-body">
+                   
+                  </div>
+                  
+                </div>
+              </div>
+           </div>
+       </div>
+   </div>
+    -->
+   
+
         
 
         {% block content %}
 
         {% endblock %}
-    </div>
+    
     <hr>
     <footer class="fixed-bottom">{% include 'MGMT/navbar.html' %}</footer>
 
 
 {% block js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/af-2.3.0/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fh-3.1.4/r-2.2.2/datatables.min.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/af-2.3.0/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fh-3.1.4/r-2.2.2/datatables.min.js"></script>
+<script>
+$(document).ready( function () {
+$('.table_id').DataTable({
 
+dom: 'B<"clear">lfrtip',
+buttons: {
+    name: 'primary',
+    buttons: [ 'copy', 'csv', 'excel', 'pdf' ]
+
+    }}
+);
+} );
+</script>
 {% endblock js %}
 
 

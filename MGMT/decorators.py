@@ -32,7 +32,7 @@ def admin_only(view_func):
             group = request.user.groups.all()[0].name
 
         if group == 'money_users':
-            return redirect('user_page')
+            return redirect('user-settings')
 
         if group == 'admins':
             return view_func(request, *args, **kwargs)
