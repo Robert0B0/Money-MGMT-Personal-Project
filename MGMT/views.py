@@ -85,7 +85,8 @@ def settingsPage(request):
             form.save()
     
     
-    context = {'form': form}
+    ctx = {'form': form}
+    context = {**context_add(request), **ctx} 
 
     return render(request, 'MGMT/user_settings.html', context)
 
