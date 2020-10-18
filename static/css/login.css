@@ -7,7 +7,7 @@ body {
 }
 	html {
 		margin: 0;
-		padding: 0;
+		padding: 9;
 		height: 100%;
         
 	}
@@ -15,7 +15,7 @@ body {
 		width: 350px;
 		margin-top: auto;
 		margin-bottom: auto;
-        background: rgb(203, 206, 223);;
+        background: rgb(228, 228, 228);
         opacity: .8;
 		position: relative;
 		display: flex;

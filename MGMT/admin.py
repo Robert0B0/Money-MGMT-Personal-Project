@@ -7,3 +7,4 @@ from .models import *
 admin.site.register(moneyUser)
 admin.site.register(moneyGoals)
 admin.site.register(moneyRecord)
+admin.site.register(savingsJar)

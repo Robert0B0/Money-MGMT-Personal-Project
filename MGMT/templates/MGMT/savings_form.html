@@ -1,0 +1,34 @@
+{% extends 'MGMT/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="card card-body">
+    <div class="display-4">Add a Savings Jar:</div>
+    <hr>
+    <div class="card card-body">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div style="display: none;">
+                {{ form.user }}
+            </div>
+            <div class="card card-body special-card">
+                <div class="display-5">Naming: {{ form.naming }}</div>
+                <hr>
+                <div class="display-5">Desired_amount: {{ form.desired_amount }}</div>
+                <hr>
+                <div class="display-5">Present Amount: {{ form.amount }}</div>
+            </div>
+            <input class="btn btn-outline-secondary" type="submit" name="Submit">
+            <a class="btn btn-outline-secondary" href="{% url 'savings_page' %}">Cancel</a>
+        </form>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

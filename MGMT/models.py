@@ -52,10 +52,22 @@ class moneyRecord(models.Model):
     naming = models.CharField(max_length=200, null=False, blank=True, default="Record")
     category = models.CharField(max_length=200, null=False, choices=CATEGORY, default='Outcome')
     amount = models.DecimalField(null=False, max_digits=10, decimal_places=2, default=0)
-    date_created = models.DateTimeField(auto_now_add=True, null=True)
+    date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return '€' + str(self.amount)
+
+class savingsJar(models.Model):
+
+    user = models.ForeignKey(moneyUser, null=True, on_delete=models.SET_NULL)
+    naming = models.CharField(max_length=200, null=False, blank=True, default="Savings-Jar")
+    desired_amount = models.DecimalField(null=False, max_digits=10, decimal_places=2, default=0)
+    amount = models.DecimalField(null=False, max_digits=10, decimal_places=2, default=0)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+
+    def __str__(self):
+        return str(self.naming)
 
 
 

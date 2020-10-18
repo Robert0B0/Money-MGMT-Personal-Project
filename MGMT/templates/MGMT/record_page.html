@@ -13,7 +13,9 @@
                 </div>
                 <div class="card-body">
                     <div class="display-4">total expenses: €{{ total_expenses|floatformat:2 }} </div>
+                    <hr>
                     <div class="display-4">total upkeep: €{{ total_upkeep|floatformat:2 }}</div>
+                    <hr>
                     <div class="display-4">total other expenses: €{{ total_unforeseen|floatformat:2 }}</div>
                 </div>
             </div>
@@ -25,7 +27,9 @@
                 </div>
                 <div class="card-body">
                     <div class="display-4">total income: €{{ total_income|floatformat:2 }} </div>
+                    <hr>
                     <div class="display-4">total dividents: €{{ total_dividents|floatformat:2 }}</div>
+                    <hr>
                     <div class="display-4">total other sources: €{{ total_in_other|floatformat:2 }}</div>
                 </div>
             </div>
@@ -38,6 +42,7 @@
         <div class="display-4">Records: {{total_records}} total, 
             <a class="btn btn-outline-primary btn-lg" href="{% url 'record_form' user.id %}">Add a Record</a> 
         </div>
+        <hr>
         <table class="table table_id table-striped table-hover table-secondary">
             <thead class="thead-dark">
                 <tr>
@@ -55,7 +60,7 @@
                         <td class="text-center font-weight-bold" >{{record.category}}</td>
                         <td class="text-center font-weight-bold" >{{record.naming}}</td>
                         <td class="text-center font-weight-bold" >€{{record.amount}}</td>
-                        <td class="text-center font-weight-bold" >{{record.date_created}}</td>
+                        <td class="text-center font-weight-bold" >{{record.date}}</td>
                         <td class="text-center font-weight-bold" ><a class="btn btn-outline-secondary btn-lg" href="{% url 'update_record' record.id %}">Update</a></td>
                         <td class="text-center font-weight-bold" ><a class="btn btn-outline-danger btn-lg"    href="{% url 'delete_record' record.id %}">Delete</a></td><
                     </tr>

@@ -23,8 +23,10 @@ urlpatterns = [
     path('update_goal/<str:pk>/', views.updateGoal, name="update_goal"),
     path('delete_goal/<str:pk>/', views.deleteGoal, name="delete_goal"),
 
-    path('savings', views.savingsPage, name="savings_page"),
-    path('saving_form', views.createSaving, name="savings_form"),
+    path('savings/', views.savingsPage, name="savings_page"),
+    path('saving_form/', views.createSaving, name="savings_form"),
+    path('savings_update/<str:pk>/', views.updateSaving, name="update_savings"),
+    path('savings_delete/<str:pk>/', views.deleteSaving, name="delete_savings"),
 
     path('graph/', views.graphPage, name="graphs"),
 

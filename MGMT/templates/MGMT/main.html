@@ -28,7 +28,7 @@
               <div class="card special-card text-center">
                   <div class="card-title display-4">{{request.user}},  <a href="{% url 'user-settings' %}" class="btn btn-outline-secondary btn-lg">User settings</a></div>
                   <hr>
-                  <div class="card-title display-4">Ballance: ${{balance|floatformat:2}}</div>
+                  <div class="card-title display-4">Balance: ${{balance|floatformat:2}}</div>
               </div>
             </div>
           </div>
@@ -71,8 +71,7 @@
 
         {% endblock %}
     
-    <hr>
-    <footer class="fixed-bottom">{% include 'MGMT/navbar.html' %}</footer>
+
 
 
 {% block js %}

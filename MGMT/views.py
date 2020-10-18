@@ -14,7 +14,6 @@ from django.db.models import Sum
 from .models import *
 from .forms import *
 
-
 #=================| ACCOUNT SETTINGS |=========================================
 
 @unauthenticated_user
@@ -76,23 +75,7 @@ def logoutUser(request):
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins','money_users'])
 def settingsPage(request):
-    records = request.user.moneyuser.moneyrecord_set.all()
-    goals = request.user.moneyuser.moneygoals_set.all()
-    total_records = records.count()
-    total_goals = goals.count()
-
-    user_name = request.user.username
-    wallet = request.user.moneyuser.worth
-
-    total_out = request.user.moneyuser.moneyrecord_set.filter(category='expenses').filter(category='upkeep').aggregate(Sum('amount'))['amount__sum']
-    total_in = request.user.moneyuser.moneyrecord_set.filter(category='monthly income').aggregate(Sum('amount'))['amount__sum']
-    if total_out is None:
-        total_out = 0
-    if total_in is None:
-        total_in = 0
     
-    balance = wallet - total_out + total_in
-
     moneyuser = request.user.moneyuser
     form = MoneyUserForm(instance=moneyuser)
 
@@ -102,19 +85,13 @@ def settingsPage(request):
             form.save()
     
     
-    context = {'form': form, 'records': records, 'total_records':total_records, 'goals': goals, 'total_goals': total_goals, 
-        'user_name': user_name, 'balance': balance}
+    context = {'form': form}
 
     return render(request, 'MGMT/user_settings.html', context)
 
+#=================| Global |=========================================
 
-
-
-#=================| HOME PAGE |=========================================
-
-@login_required(login_url='login_page')
-@allowed_users(allowed_roles=['admins','money_users'])
-def homePage(request):
+def context_add(request):
     records = request.user.moneyuser.moneyrecord_set.all()
     goals = request.user.moneyuser.moneygoals_set.all()
     total_records = records.count()
@@ -122,19 +99,38 @@ def homePage(request):
 
     user_name = request.user.username
     wallet = request.user.moneyuser.worth
-
-    total_out = request.user.moneyuser.moneyrecord_set.filter(category='expenses').filter(category='upkeep').aggregate(Sum('amount'))['amount__sum']
-    total_in = request.user.moneyuser.moneyrecord_set.filter(category='monthly income').aggregate(Sum('amount'))['amount__sum']
-    if total_out is None:
-        total_out = 0
-    if total_in is None:
-        total_in = 0
     
-    balance = wallet - total_out + total_in
+
+    total_expenses = request.user.moneyuser.moneyrecord_set.filter(category='expenses').aggregate(Sum('amount'))['amount__sum']
+    if total_expenses is None: total_expenses = 0
+    total_upkeep = request.user.moneyuser.moneyrecord_set.filter(category='upkeep').aggregate(Sum('amount'))['amount__sum']
+    if total_upkeep is None: total_upkeep = 0
+    total_unforeseen = request.user.moneyuser.moneyrecord_set.filter(category='unforeseen').aggregate(Sum('amount'))['amount__sum']
+    if total_unforeseen is None: total_unforeseen = 0
+
+    total_income = request.user.moneyuser.moneyrecord_set.filter(category='monthly income').aggregate(Sum('amount'))['amount__sum']
+    if total_income is None: total_income = 0
+    total_dividents = request.user.moneyuser.moneyrecord_set.filter(category='dividents').aggregate(Sum('amount'))['amount__sum']
+    if total_dividents is None: total_dividents = 0
+    total_in_other = request.user.moneyuser.moneyrecord_set.filter(category='other').aggregate(Sum('amount'))['amount__sum']
+    if total_in_other is None: total_in_other = 0
+    
+    balance = wallet - (total_expenses + total_upkeep + total_unforeseen) + ( total_income + total_dividents + total_in_other)
 
 
     context = {'records': records, 'total_records':total_records, 'goals': goals, 'total_goals': total_goals, 
         'user_name': user_name, 'balance': balance}
+
+    return context
+
+#=================| HOME PAGE |=========================================
+
+@login_required(login_url='login_page')
+@allowed_users(allowed_roles=['admins','money_users'])
+def homePage(request):
+    
+
+    context = context_add(request) 
 
     return render(request, 'MGMT/home.html', context)
 
@@ -143,35 +139,24 @@ def homePage(request):
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins','money_users'])
 def recordPage(request):
-    records = request.user.moneyuser.moneyrecord_set.all()
-    goals = request.user.moneyuser.moneygoals_set.all()
-    total_records = records.count()
-    total_goals = goals.count()
-
-    user_name = request.user.username
-    wallet = request.user.moneyuser.worth
-
-    total_out = request.user.moneyuser.moneyrecord_set.filter(category='expenses').filter(category='upkeep').aggregate(Sum('amount'))['amount__sum']
-    total_in = request.user.moneyuser.moneyrecord_set.filter(category='monthly income').aggregate(Sum('amount'))['amount__sum']
-    if total_out is None:
-        total_out = 0
-    if total_in is None:
-        total_in = 0
-    
-    balance = wallet - total_out + total_in
-
+  
     total_expenses = request.user.moneyuser.moneyrecord_set.filter(category='expenses').aggregate(Sum('amount'))['amount__sum']
+    if total_expenses is None: total_expenses = 0
     total_upkeep = request.user.moneyuser.moneyrecord_set.filter(category='upkeep').aggregate(Sum('amount'))['amount__sum']
+    if total_upkeep is None: total_upkeep = 0
     total_unforeseen = request.user.moneyuser.moneyrecord_set.filter(category='unforeseen').aggregate(Sum('amount'))['amount__sum']
+    if total_unforeseen is None: total_unforeseen = 0
 
     total_income = request.user.moneyuser.moneyrecord_set.filter(category='monthly income').aggregate(Sum('amount'))['amount__sum']
+    if total_income is None: total_income = 0
     total_dividents = request.user.moneyuser.moneyrecord_set.filter(category='dividents').aggregate(Sum('amount'))['amount__sum']
+    if total_dividents is None: total_dividents = 0
     total_in_other = request.user.moneyuser.moneyrecord_set.filter(category='other').aggregate(Sum('amount'))['amount__sum']
+    if total_in_other is None: total_in_other = 0
 
-    context = {'records': records, 'total_records':total_records, 'goals': goals, 'total_goals': total_goals, 
-        'user_name': user_name, 'balance': balance, 
-        'total_expenses' : total_expenses, 'total_upkeep': total_upkeep, 'total_unforeseen': total_unforeseen,
-        'total_income': total_income, 'total_dividents': total_dividents, 'total_in_other': total_in_other}
+    ctx = { 'total_expenses' : total_expenses, 'total_upkeep': total_upkeep, 'total_unforeseen': total_unforeseen,
+        'total_income': total_income, 'total_dividents': total_dividents, 'total_in_other': total_in_other} 
+    context = {**context_add(request), **ctx}  
 
     return render(request, 'MGMT/record_page.html', context)
 
@@ -186,22 +171,27 @@ def createRecord(request, pk):
             form.save()
             return redirect('/')
 
-    context = {'form': form}
+
+    ctx = {'form': form}
+    context = {**context_add(request), **ctx} 
 
     return render(request, 'MGMT/record_form.html', context)
 
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins','money_users'])
 def updateRecord(request, pk):
-    act = moneyRecord.objects.get(id=pk)
-    form = RecordForm(instance=act)
+    record = moneyRecord.objects.get(id=pk)
+    form = RecordForm(instance=record)
     if request.method == 'POST':
-        form = RecordForm(request.POST, instance=act)
+        form = RecordForm(request.POST, instance=record)
         if form.is_valid:
             form.save()
             return redirect('/records/')
 
-    context = {'form': form}
+    
+
+    ctx = {'form': form}
+    context = {**context_add(request), **ctx} 
 
     return render(request, 'MGMT/record_form.html', context) 
 
@@ -211,8 +201,11 @@ def deleteRecord(request, pk):
     record = moneyRecord.objects.get(id=pk)
     if request.method == 'POST':
         record.delete()
-        return redirect('/records/') 
-    context ={'record': record}
+        return redirect('/records/')
+
+    
+    ctx ={'record': record}
+    context = {**context_add(request), **ctx}  
 
     return render(request, 'MGMT/record_delete.html', context)
 
@@ -223,25 +216,10 @@ def deleteRecord(request, pk):
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins','money_users'])
 def goalsPage(request):
-    records = request.user.moneyuser.moneyrecord_set.all()
-    goals = request.user.moneyuser.moneygoals_set.all()
-    total_records = records.count()
-    total_goals = goals.count()
-
-    user_name = request.user.username
-    wallet = request.user.moneyuser.worth
-
-    total_out = request.user.moneyuser.moneyrecord_set.filter(category='expenses').filter(category='upkeep').aggregate(Sum('amount'))['amount__sum']
-    total_in = request.user.moneyuser.moneyrecord_set.filter(category='monthly income').aggregate(Sum('amount'))['amount__sum']
-    if total_out is None:
-        total_out = 0
-    if total_in is None:
-        total_in = 0
+   
     
-    balance = wallet - total_out + total_in
-
-    context = {'records': records, 'total_records':total_records, 'goals': goals, 'total_goals': total_goals, 
-        'user_name': user_name, 'balance': balance}
+    ctx = {}
+    context = {**context_add(request), **ctx}  
 
     return render(request, 'MGMT/goals_page.html', context)
 
@@ -256,7 +234,8 @@ def createGoal(request):
             form.save()
             return redirect('/goals/')
 
-    context = {'form': form}
+    ctx = {'form': form}
+    context = {**context_add(request), **ctx}  
 
     return render(request, 'MGMT/goal_form.html', context)
 
@@ -271,7 +250,10 @@ def updateGoal(request, pk):
             form.save()
             return redirect('/goals/')
 
-    context = {'form': form}
+   
+
+    ctx = {'form': form}
+    context = {**context_add(request), **ctx}  
 
     return render(request, 'MGMT/goal_form.html', context)
 
@@ -283,7 +265,10 @@ def deleteGoal(request, pk):
         goal.delete()
         return redirect('/goals/')
     
-    context = {'goal': goal}
+    
+
+    ctx = {'goal': goal}
+    context = {**context_add(request), **ctx}  
 
     return render(request, 'MGMT/goal_delete.html', context)
 
@@ -292,34 +277,58 @@ def deleteGoal(request, pk):
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins','money_users'])
 def savingsPage(request):
-    records = request.user.moneyuser.moneyrecord_set.all()
-    goals = request.user.moneyuser.moneygoals_set.all()
-    total_records = records.count()
-    total_goals = goals.count()
-
-    user_name = request.user.username
-    wallet = request.user.moneyuser.worth
-
-    total_out = request.user.moneyuser.moneyrecord_set.filter(category='expenses').filter(category='upkeep').aggregate(Sum('amount'))['amount__sum']
-    total_in = request.user.moneyuser.moneyrecord_set.filter(category='monthly income').aggregate(Sum('amount'))['amount__sum']
-    if total_out is None:
-        total_out = 0
-    if total_in is None:
-        total_in = 0
+    jars = request.user.moneyuser.savingsjar_set.all()
     
-    balance = wallet - total_out + total_in
-    
-    context = {'records': records, 'total_records':total_records, 'goals': goals, 'total_goals': total_goals, 
-        'user_name': user_name, 'balance': balance}
+    ctx = {'jars': jars}
+    context = {**context_add(request), **ctx}  
 
     return render(request, 'MGMT/savings_page.html', context)
 
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins','money_users'])
 def createSaving(request):
-    context = {}
+    user = request.user.moneyuser
+    form = SavingsForm(initial={'user': user})
+    if request.method == 'POST':
+        form = SavingsForm(request.POST)
+        if form.is_valid:
+            form.save()
+            return redirect('/savings/')
 
-    return render(request, 'MGMT/savings_page.html', context)
+
+    ctx = {'form': form}
+    context = {**context_add(request), **ctx}  
+
+    return render(request, 'MGMT/savings_form.html', context)
+
+@login_required(login_url='login_page')
+@allowed_users(allowed_roles=['admins','money_users'])
+def updateSaving(request, pk):
+    jar = savingsJar.objects.get(id=pk)
+    form = SavingsForm(instance=jar)
+    if request.method == 'POST':
+        form = SavingsForm(request.POST, instance=jar)
+        if form.is_valid:
+            form.save()
+            return redirect('/savings/')
+
+    ctx = {'form': form}
+    context = {**context_add(request), **ctx}  
+
+    return render(request, 'MGMT/savings_form.html', context)
+
+@login_required(login_url='login_page')
+@allowed_users(allowed_roles=['admins','money_users'])
+def deleteSaving(request, pk):
+    jar = savingsJar.objects.get(id=pk)
+    if request.method == 'POST':
+        jar.delete()
+        return redirect('/savings/')
+
+    ctx = {'jar': jar}
+    context = {**context_add(request), **ctx}  
+
+    return render(request, 'MGMT/savings_delete.html', context)
 
 
 #=================| GRAPHS |=========================================
@@ -327,25 +336,9 @@ def createSaving(request):
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins','money_users'])
 def graphPage(request):
-    records = request.user.moneyuser.moneyrecord_set.all()
-    goals = request.user.moneyuser.moneygoals_set.all()
-    total_records = records.count()
-    total_goals = goals.count()
-
-    user_name = request.user.username
-    wallet = request.user.moneyuser.worth
-
-    total_out = request.user.moneyuser.moneyrecord_set.filter(category='expenses').filter(category='upkeep').aggregate(Sum('amount'))['amount__sum']
-    total_in = request.user.moneyuser.moneyrecord_set.filter(category='monthly income').aggregate(Sum('amount'))['amount__sum']
-    if total_out is None:
-        total_out = 0
-    if total_in is None:
-        total_in = 0
     
-    balance = wallet - total_out + total_in
-    
-    context = {'records': records, 'total_records':total_records, 'goals': goals, 'total_goals': total_goals, 
-        'user_name': user_name, 'balance': balance}
+    ctx = {}
+    context = {**context_add(request), **ctx}  
 
     return render(request, 'MGMT/graph.html', context)
 

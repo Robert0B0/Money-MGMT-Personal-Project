@@ -4,8 +4,12 @@
 
 {% block content %}
 
-<div class="contnainer">
+<div class="container-fluid">
     <div class="card card-body special-card">
+        <div class="display-4">Goals: {{total_goals}} total, 
+            <a class="btn btn-outline-primary btn-lg" href="{% url 'goal_form' %}">Add a Goal</a> 
+        </div>
+        <hr>
         <table class="table table_id table-striped table-hover table-secondary">
             <thead class="thead-dark">
                 <tr>
@@ -31,9 +35,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <div class="display-4">Records: {{total_records}} total, 
-            <a class="btn btn-outline-primary btn-lg" href="{% url 'record_form' user.id %}">Add a Record</a> 
-        </div>
+        
     </div>
 </div>
 

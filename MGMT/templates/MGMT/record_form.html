@@ -7,26 +7,31 @@
 
 
 
+<div class="container-fluid">
+    <div class="card card-body special-card" style="width: 40rem; margin: 0 auto">
+        <div class="display-4">Monetary Record:</div>
+        <hr>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div style="display: none;">
+                {{ form.user }}
+            </div>
+            <div class="card card-body special-card">
+                <div class="display-5">Naming: {{ form.naming }}</div>
+                <hr>
+                <div class="display-5">Category: {{ form.category }}</div>
+                <hr>
+                <div class="display-5">Amount: {{ form.amount }}</div>
+                <hr>
+                <div class="display-5">Date: {{ form.date }}</div>
+                <hr>
 
-<div class="card card-body">
-    <div class="display-4">Add a monetary record:</div>
-    <hr>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <div style="display: none;">
-            {{ form.user }}
-        </div>
-        <div class="card card-body special-card">
-            <div class="display-5">Naming: {{ form.naming }}</div>
-            <hr>
-            <div class="display-5">Category: {{ form.category }}</div>
-            <hr>
-            <div class="display-5">Amount: {{ form.amount }}</div>
-            <hr>
-        </div>
-        <input class="btn btn-outline-secondary" type="submit" name="Submit">
-        <a class="btn btn-outline-secondary" href="{% url 'record_page' %}">Cancel</a>
-    </form>
+            </div>
+            <input class="btn btn-outline-primary btn-lg" type="submit" name="Submit">
+            <a class="btn btn-outline-secondary btn-lg" href="{% url 'record_page' %}">Cancel</a>
+        </form>
+    </div>
 </div>
+
 
 {% endblock %}

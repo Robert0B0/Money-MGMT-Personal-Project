@@ -5,14 +5,14 @@
 {% block content %}
 
 <div class="card card-body special-card" style="width: 70rem; margin: 0 auto">
-    <div class="display-3">Are you sure you want to delete " {{goal}} "  goal?</div>
+    <div class="display-3">Are you sure you want to delete " {{jar}} "  Savings Jar?</div>
     <hr>
-    <form action="{% url 'delete_goal' goal.id %}"  method="POST">
+    <form action="{% url 'delete_savings' jar.id %}"  method="POST">
         {% csrf_token %}
         
     
         <input class="btn btn-outline-danger btn-lg" type="submit" name="Confirm">
-        <a class="btn btn-outline-secondary btn-lg" href="{% url 'goals_page' %}">Cancel</a>
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'savings_page' %}">Cancel</a>
     </form>
 </div>
 
