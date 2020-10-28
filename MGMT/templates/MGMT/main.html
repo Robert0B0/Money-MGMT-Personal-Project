@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% load static %}
 
 <!DOCTYPE html>
@@ -82,4 +83,110 @@ buttons: {
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/af-2.3.0/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fh-3.1.4/r-2.2.2/datatables.min.js"></script>
 
 </body>
+=======
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Money Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">
+</head>
+
+
+<body>
+    {% include 'MGMT/navbar.html' %}
+
+    <div class="container-fluid ">
+        <hr>
+        <div class="row justify-content-between">
+            <div class="col-5">
+              <div class="card special-card text-center">
+                  <div class="card-title display-4">Message for the moment</div>
+                  <hr>
+                  <div class="card-title display-4">Message</div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="card special-card text-center">
+                  <div class="card-title display-4">{{request.user}},  <a href="{% url 'user-settings' %}" class="btn btn-outline-secondary btn-lg">User settings</a></div>
+                  <hr>
+                  <div class="card-title display-4">Balance: ${{balance|floatformat:2}}</div>
+              </div>
+            </div>
+          </div>
+          <hr>
+        </div>
+    
+
+    <!--
+        <div class="container">
+       <div class="row">
+        <div class="card special-card" style="width: 48rem;">
+            <div class="card-body">
+              <h5 class="card-title display-4">Message for the moment</h5>
+              <p class="card-text display-5">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="#" class="btn btn-outline-primary btn-lg">Go somewhere</a>
+            </div>
+          </div>
+           <div class="col-sm">
+            <div class="card special-card" style="width: 28rem; height: 12rem;">
+                <div class="card-body">
+                  <h5 class="card-title display-4">{{request.user}},  <a href="#" class="btn btn-outline-primary btn-lg">User settings</a></h5>
+
+                    <div class="card-title display-4">${{balance|floatformat:2}}</div>
+
+                  <div class="card-body">
+                   
+                  </div>
+                  
+                </div>
+              </div>
+           </div>
+       </div>
+   </div>
+    -->
+   
+
+        
+
+        {% block content %}
+
+        {% endblock %}
+    
+
+
+
+{% block js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/af-2.3.0/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fh-3.1.4/r-2.2.2/datatables.min.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/af-2.3.0/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fh-3.1.4/r-2.2.2/datatables.min.js"></script>
+<script>
+$(document).ready( function () {
+$('.table_id').DataTable({
+
+dom: 'B<"clear">lfrtip',
+buttons: {
+    name: 'primary',
+    buttons: [ 'copy', 'csv', 'excel', 'pdf' ]
+
+    }}
+);
+} );
+</script>
+{% endblock js %}
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.18/af-2.3.0/b-1.5.2/b-colvis-1.5.2/b-flash-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/fh-3.1.4/r-2.2.2/datatables.min.js"></script>
+
+</body>
+>>>>>>> f6d125a7726c9696f66143e56d9f85cb4b129e04
 </html>
