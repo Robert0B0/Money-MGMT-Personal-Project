@@ -1,31 +1,153 @@
 {% extends 'MGMT/main.html' %}
 
 {% block content %}
+<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<h3>graph (Under construction) </h3>
 
 <div class="container-fluid">
     <div class="card special-card">
-        <div class="card-header">
-          <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Active</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#">Disabled</a>
-            </li>
-          </ul>
+        <div class="card-body special-card">
+            <ul class="nav nav-pills lb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="pill" id="pills-expenses-tab" href="#pills-expenses" role="tab" aria-controls="pills-expenses" aria-selected="true">Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " data-toggle="pill" id="pills-income-tab" href="#pills-income" role="tab" aria-controls="pills-income" aria-selected="true">Income</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" data-toggle="pill" id="pills-savings-tab" href="#pills-savings" role="tab" aria-controls="pills-savings" aria-selected="true">Savings</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fate show active" id="pills-expenses" role="tabpanel" aria-labelledby="pills-expenses-tab">
+                    <div class="container-fluid">
+                        <div class="card-title"><div class="display-4">Expenses</div></div>
+                        <div class="card card-body special-card">
+                    
+                            <div id="Expenses_Chart"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fate show " id="pills-income" role="tabpanel" aria-labelledby="pills-income-tab">
+                    <div class="container-fluid">
+                        <div class="card-title"><div class="display-4">Incomes</div></div>
+                        <div class="card card-body special-card">
+                    
+                            <div id="Income_Chart"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fate show " id="pills-savings" role="tabpanel" aria-labelledby="pills-savings-tab">
+        
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
+        
+    </div>
+    
 </div>
 
+
+
+
+
+
+<script>
+
+    var expenses_state = {
+        'dates':[],
+        'amounts':[],
+    }
+ 
+    var dataURL = `/expense_data/`
+    $.ajax({
+        method:'GET',
+        url:dataURL,
+        success:function(response){
+            console.log('RESPONSE:', response)
+            for (var i in response) {
+
+                var key = Object.keys(response[i])[0]
+                var value = Object.values(response[i])[0]
+
+                expenses_state.dates.push(key)
+                expenses_state.amounts.push(value)
+            }
+
+            console.log('STATE:', expenses_state)
+            buildExpensesChart()
+        }
+    })
+
+    function buildExpensesChart(){
+        var chartData = {
+            "type":"bar",
+            "scale-x":{
+                "values": expenses_state.dates
+            },
+            "series":[
+                {
+                    "values": expenses_state.amounts 
+                }
+            ]
+        }
+        
+        zingchart.render({
+            id: "Expenses_Chart",
+            data: chartData,
+        });
+    } 
+
+
+    
+    var income_state = {
+        'dates':[],
+        'amounts':[],
+    }
+ 
+    var dataURL = `/income_data/`
+    $.ajax({
+        method:'GET',
+        url:dataURL,
+        success:function(response){
+            console.log('RESPONSE:', response)
+            for (var i in response) {
+
+                var key = Object.keys(response[i])[0]
+                var value = Object.values(response[i])[0]
+
+               income_state.dates.push(key)
+               income_state.amounts.push(value)
+            }
+
+            console.log('STATE:', income_state)
+            buildIncomeChart()
+        }
+    })
+
+    function buildIncomeChart(){
+        var chartData = {
+            "type":"bar",
+            "scale-x":{
+                "values": income_state.dates
+            },
+            "series":[
+                {
+                    "values": income_state.amounts 
+                }
+            ]
+        }
+        
+        zingchart.render({
+            id: "Income_Chart",
+            data: chartData,
+        });
+    } 
+    
+    
+    
+
+</script>
 
 {% endblock %}

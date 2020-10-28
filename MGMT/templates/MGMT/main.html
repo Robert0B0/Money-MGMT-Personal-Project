@@ -5,7 +5,10 @@
 <head>
     <title>Money Management</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"></script>
     
     <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">
 </head>
@@ -34,43 +37,20 @@
           </div>
           <hr>
         </div>
+
+<div class="containter container-box">
+  {% block content %}
+
+{% endblock %}
+</div>
+
     
-
-    <!--
-        <div class="container">
-       <div class="row">
-        <div class="card special-card" style="width: 48rem;">
-            <div class="card-body">
-              <h5 class="card-title display-4">Message for the moment</h5>
-              <p class="card-text display-5">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-outline-primary btn-lg">Go somewhere</a>
-            </div>
-          </div>
-           <div class="col-sm">
-            <div class="card special-card" style="width: 28rem; height: 12rem;">
-                <div class="card-body">
-                  <h5 class="card-title display-4">{{request.user}},  <a href="#" class="btn btn-outline-primary btn-lg">User settings</a></h5>
-
-                    <div class="card-title display-4">${{balance|floatformat:2}}</div>
-
-                  <div class="card-body">
-                   
-                  </div>
-                  
-                </div>
-              </div>
-           </div>
-       </div>
-   </div>
-    -->
-   
-
-        
-
-        {% block content %}
-
-        {% endblock %}
-    
+<footer class="page-footer footer-custom font-small bg-dark text-light sticky-bottom">
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="https://mdbootstrap.com/"> MGMT.com</a>
+    <a class="btn btn-outline-primary btn-lg ml-10"href="{% url 'about' %}">About</a>
+  </div>
+</footer>
 
 
 

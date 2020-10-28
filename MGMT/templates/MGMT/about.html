@@ -1,0 +1,30 @@
+{% extends 'MGMT/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="card card-body special-card">
+        <div class="display-2">About <a href="{% url 'home' %}">Website</a>,</div>
+        <div class="display-3">Money Management Web Application.</div>
+        <div class="display-3">Take Control Of Your Riches!</div>
+        <div class="display-4">Author: <a href="">Robert B.</a></div>
+    </div>
+    
+    <div class="card card-body special-card" style="text-align: left;">
+        <div class=></div>
+        <div class="display-3">Built with:</div>
+        <hr>
+        <div class="display-4">-<a href="">Django</a> as the Web Framework,</div>
+        <div class="display-4">-<a href="">Bootstrap</a> as the CSS Framework</div>
+        <div class="display-4">-<a href="">DataTable</a> for Advanced Tables,</div>
+        <div class="display-4">-<a href="">Zingchart</a> for Charts & Graphs,</div>
+        <div class="display-4">-<a href="">Ajax</a> for Data phrasing,</div>
+        <div class="display-4">-<a href="">Heroku</a> as the Web Hosting Service,</div>
+        <hr>
+        <div class="display-4">Learn Programming at <a href="">Wellcode</a>.</div>
+    </div>
+</div>
+
+{% endblock %}

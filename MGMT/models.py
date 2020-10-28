@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
+
 
 # Create your models here.
+
 
 class moneyUser(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
@@ -13,6 +16,7 @@ class moneyUser(models.Model):
 
     def __str__(self):
         return str(self.name)
+
 
 class moneyGoals(models.Model):
     CATEGORY = (
@@ -31,6 +35,7 @@ class moneyGoals(models.Model):
 
     def __str__(self):
         return str(self.naming)
+
 
 class moneyRecord(models.Model):
     CATEGORY = (
@@ -52,10 +57,14 @@ class moneyRecord(models.Model):
     naming = models.CharField(max_length=200, null=False, blank=True, default="Record")
     category = models.CharField(max_length=200, null=False, choices=CATEGORY, default='Outcome')
     amount = models.DecimalField(null=False, max_digits=10, decimal_places=2, default=0)
-    date = models.DateTimeField(auto_now_add=True, null=True)
+    date = models.DateTimeField(auto_now_add=False, null=True, default=now)
 
     def __str__(self):
-        return '€' + str(self.amount)
+        return '$' + str(self.amount)
+    
+    # def __str__(self):
+    #     return "{}-{}".format(self.naming, self.amount)
+
 
 class savingsJar(models.Model):
 
@@ -63,9 +72,8 @@ class savingsJar(models.Model):
     naming = models.CharField(max_length=200, null=False, blank=True, default="Savings-Jar")
     desired_amount = models.DecimalField(null=False, max_digits=10, decimal_places=2, default=0)
     amount = models.DecimalField(null=False, max_digits=10, decimal_places=2, default=0)
-    date_created = models.DateTimeField(auto_now_add=True, null=True)
-
-
+    date_created = models.DateTimeField(auto_now_add=False, null=True)
+    
     def __str__(self):
         return str(self.naming)
 

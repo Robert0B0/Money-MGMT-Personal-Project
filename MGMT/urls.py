@@ -1,7 +1,7 @@
-from django.contrib import admin
-from django.urls import path, include
+# from django.contrib import admin
+from django.urls import path
 
-from django.contrib.auth import views as auth_views
+from django.contrib.auth import views
 from . import views
 
 urlpatterns = [
@@ -25,10 +25,18 @@ urlpatterns = [
 
     path('savings/', views.savingsPage, name="savings_page"),
     path('saving_form/', views.createSaving, name="savings_form"),
-    path('savings_update/<str:pk>/', views.updateSaving, name="update_savings"),
-    path('savings_delete/<str:pk>/', views.deleteSaving, name="delete_savings"),
+    path(
+        'savings_update/<str:pk>/',
+        views.updateSaving, name="update_savings"),
+    path(
+        'savings_delete/<str:pk>/',
+        views.deleteSaving, name="delete_savings"),
 
     path('graph/', views.graphPage, name="graphs"),
+    path('expense_data/', views.expenseData, name="expenseData"),
+    path('income_data/', views.incomeData, name="incomeData"),
+    # path('savings_data/', views.savingsData, name="savingsData"),
 
+    path('about/', views.aboutPage, name="about"),
 
 ]

@@ -4,6 +4,18 @@
 
 {% block content %}
 
+<style>
+    .OutflowValue {
+        color: #8a0000;
+        font-size: 150%;
+      }
+      
+      .InflowValue {
+        color: #007a06;
+        font-size: 150%;
+      }
+</style>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col">
@@ -12,11 +24,11 @@
                     <div class="display-4">Outflow: </div>
                 </div>
                 <div class="card-body">
-                    <div class="display-4">total expenses: €{{ total_expenses|floatformat:2 }} </div>
+                    <div class="display-4">total expenses: ${{ total_expenses|floatformat:2 }} </div>
                     <hr>
-                    <div class="display-4">total upkeep: €{{ total_upkeep|floatformat:2 }}</div>
+                    <div class="display-4">total upkeep: ${{ total_upkeep|floatformat:2 }}</div>
                     <hr>
-                    <div class="display-4">total other expenses: €{{ total_unforeseen|floatformat:2 }}</div>
+                    <div class="display-4">total other expenses: ${{ total_unforeseen|floatformat:2 }}</div>
                 </div>
             </div>
         </div>
@@ -26,11 +38,11 @@
                     <div class="display-4">Inflow: </div>
                 </div>
                 <div class="card-body">
-                    <div class="display-4">total income: €{{ total_income|floatformat:2 }} </div>
+                    <div class="display-4">total income: ${{ total_income|floatformat:2 }} </div>
                     <hr>
-                    <div class="display-4">total dividents: €{{ total_dividents|floatformat:2 }}</div>
+                    <div class="display-4">total dividents: ${{ total_dividents|floatformat:2 }}</div>
                     <hr>
-                    <div class="display-4">total other sources: €{{ total_in_other|floatformat:2 }}</div>
+                    <div class="display-4">total other sources: ${{ total_in_other|floatformat:2 }}</div>
                 </div>
             </div>
         </div>
@@ -57,10 +69,42 @@
             <tbody>
                 {% for record in records %}
                     <tr>
-                        <td class="text-center font-weight-bold" >{{record.category}}</td>
-                        <td class="text-center font-weight-bold" >{{record.naming}}</td>
-                        <td class="text-center font-weight-bold" >€{{record.amount}}</td>
-                        <td class="text-center font-weight-bold" >{{record.date}}</td>
+                        <td class="text-center font-weight-bold" >
+                            {% if record.category in 'expenses' or record.category in 'upkeep' or record.category in 'unforseen'  %}
+                                <div class="OutflowValue"> 
+                            {% else %} 
+                                <div class="InflowValue">
+                            {% endif %}
+                                {{ record.category }}
+                                </div>
+                        </td>
+                        <td class="text-center font-weight-bold" >
+                            {% if record.category in 'expenses' or record.category in 'upkeep' or record.category in 'unforseen'  %}
+                                <div class="OutflowValue"> 
+                            {% else %} 
+                                <div class="InflowValue">
+                            {% endif %}
+                                {{ record.naming }}
+                                </div>
+                        </td>
+                        <td class="text-center font-weight-bold" >
+                            {% if record.category in 'expenses' or record.category in 'upkeep' or record.category in 'unforseen'  %}
+                                <div class="OutflowValue"> 
+                            {% else %} 
+                                <div class="InflowValue">
+                            {% endif %}
+                                ${{ record.amount }}
+                                </div>
+                        </td>
+                        <td class="text-center font-weight-bold" >
+                            {% if record.category in 'expenses' or record.category in 'upkeep' or record.category in 'unforseen'  %}
+                                <div class="OutflowValue"> 
+                            {% else %} 
+                                <div class="InflowValue">
+                            {% endif %}
+                                {{ record.date }}
+                                </div>
+                        </td>
                         <td class="text-center font-weight-bold" ><a class="btn btn-outline-secondary btn-lg" href="{% url 'update_record' record.id %}">Update</a></td>
                         <td class="text-center font-weight-bold" ><a class="btn btn-outline-danger btn-lg"    href="{% url 'delete_record' record.id %}">Delete</a></td><
                     </tr>
