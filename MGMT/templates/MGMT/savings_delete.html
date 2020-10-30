@@ -9,12 +9,11 @@
     <hr>
     <form action="{% url 'delete_savings' jar.id %}"  method="POST">
         {% csrf_token %}
-        
-    
         <input class="btn btn-outline-danger btn-lg" type="submit" name="Confirm">
         <a class="btn btn-outline-secondary btn-lg" href="{% url 'savings_page' %}">Cancel</a>
     </form>
 </div>
+
 
 
 {% endblock %}

@@ -18,7 +18,7 @@
                     <th class="text-center font-weight-bold" scope="col">Amount</th>
                     <th class="text-center font-weight-bold" scope="col">Deposit</th>
                     <th class="text-center font-weight-bold" scope="col">Desired_amount</th>
-                    <th class="text-center font-weight-bold" scope="col">Changes</th>
+                    <th class="text-center font-weight-bold" scope="col">Modify</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,12 +27,11 @@
                         <td class="text-center font-weight-bold" >{{jar.naming}}</td>
                         <td class="text-center font-weight-bold" >${{jar.amount}}</td>
                         <td class="text-center font-weight-bold">
-                            <a class="btn btn-outline-primary btn-lg disabled"  href="">Deposit</a>
+                            <a class="btn btn-outline-primary btn-lg disabled"  href="">Tip Jar</a>
                         </td>
                         <td class="text-center font-weight-bold" >{{jar.desired_amount}}</td>
                         <td class="text-center font-weight-bold">
-                            <a class="btn btn-outline-secondary btn-lg"  href="{% url 'update_savings' jar.id %}">Update</a>
-                            <a class="btn btn-outline-danger btn-lg"     href="{% url 'delete_savings' jar.id %}">Delete</a>
+                            <a class="btn btn-secondary btn-lg"  href="{% url 'update_savings' jar.id %}">Change</a>
                         </td>
                             
                         
@@ -42,9 +41,10 @@
         </table>
         
     </div>
+    
 </div>
 
-
+{% include 'MGMT/modals.html' %}
 
 {% endblock %}
 {% block js %}

@@ -35,6 +35,9 @@ class GoalForm(ModelForm):
         model = moneyGoals
         fields = '__all__'
         # fields = ['naming', 'category', 'amount', 'due_date']
+        widgets = {
+            'due_date': DateInput()
+        }
 
 
 class CreateUserForm(UserCreationForm):

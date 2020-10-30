@@ -1,0 +1,26 @@
+{% extends 'MGMT/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="card card-body special-card" style="width: 70rem; margin: 0 auto">
+    <div class="" style="font-size: 40px;">Are you sure you want to complete  "{{goal.naming}}" goal?</div>
+    <div class="" style="font-size: 40px;">Doing so will take ${{goal.amount}} from the balance.</div>
+    <div class="" style="font-size: 40px;">
+        <u>Avabile only if enought founds are present in the balance and if enought founds remain after completion.</u>
+    </div>
+    <hr>
+    <div class="" style="font-size: 40px;">After completion: {{result|floatformat:2}}.</div>
+    <div class="" style="font-size: 40px;">And "{{goal.naming}}" goal will be deleted form the list.</div>
+    <hr>
+    <form action=""  method="POST">
+        {% csrf_token %}
+        
+    
+        <input class="btn btn-outline-success btn-lg" type="submit" name="Confirm">
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'goals_page' %}">Cancel</a>
+    </form>
+</div>
+
+{% endblock %}

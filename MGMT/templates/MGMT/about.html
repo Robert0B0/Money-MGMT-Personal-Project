@@ -5,26 +5,30 @@
 {% block content %}
 
 <div class="container-fluid">
-    <div class="card card-body special-card">
-        <div class="display-2">About <a href="{% url 'home' %}">Website</a>,</div>
-        <div class="display-3">Money Management Web Application.</div>
-        <div class="display-3">Take Control Of Your Riches!</div>
+    <div class="card card-body special-card text-center">
+        <div class="display-3">About <a href="{% url 'home' %}">Website</a>,</div>
+        <div class="display-4">Money Management Web Application.</div>
+        <div class="display-4">Take Control Of Your Riches!</div>
         <div class="display-4">Author: <a href="">Robert B.</a></div>
     </div>
     
-    <div class="card card-body special-card" style="text-align: left;">
+    <div class="card card-body special-card text-center">
         <div class=></div>
         <div class="display-3">Built with:</div>
         <hr>
-        <div class="display-4">-<a href="">Django</a> as the Web Framework,</div>
-        <div class="display-4">-<a href="">Bootstrap</a> as the CSS Framework</div>
-        <div class="display-4">-<a href="">DataTable</a> for Advanced Tables,</div>
-        <div class="display-4">-<a href="">Zingchart</a> for Charts & Graphs,</div>
-        <div class="display-4">-<a href="">Ajax</a> for Data phrasing,</div>
-        <div class="display-4">-<a href="">Heroku</a> as the Web Hosting Service,</div>
+        <div class="" style="font-size: 30px;">-<a href="">Django</a> as the Web Framework,</div>
+        <div class="" style="font-size: 30px;">-<a href="">PostgreSQL</a> as Database Storage,</div>
+        <div class="" style="font-size: 30px;">-<a href="">Bootstrap</a> as the CSS Framework</div>
+        <div class="" style="font-size: 30px;">-<a href="">DataTable</a> for Advanced Tables,</div>
+        <div class="" style="font-size: 30px;">-<a href="">Zingchart</a> for Charts & Graphs,</div>
+        <div class="" style="font-size: 30px;">-<a href="">Ajax</a> for Data Transfering,</div>
+        <div class="" style="font-size: 30px;">-<a href="">Heroku</a> as the Web Hosting Service,</div>
+        <div class="" style="font-size: 30px;">-<a href="">Github</a> for Source Code,</div>
         <hr>
-        <div class="display-4">Learn Programming at <a href="">Wellcode</a>.</div>
+        <div class="" style="font-size: 30px;">Start Learning Programming at <a href="">wellcode.com</a>.</div>
     </div>
 </div>
+
+{% include 'MGMT/modals.html' %}
 
 {% endblock %}
