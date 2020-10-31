@@ -7,9 +7,9 @@
 <div class="container-fluid">
     <div class="card card-body special-card">
         <div class="display-4">Goals: {{total_goals}} total
-            <button type="button" class="btn btn-primary btn-lg" 
-                data-toggle="modal" data-target="#GoalAddModal">Add a Goal
-            </button>
+            <a href="{% url 'create_goal' %}" 
+                class="btn btn-primary btn-lg" >Add a Goal
+            </a>
         </div>  
         <hr>
         <table class="table table_id table-striped table-hover table-secondary">
@@ -34,8 +34,41 @@
                         <td class="text-center font-weight-bold" >${{goal.amount}}</td>
                         <td class="text-center font-weight-bold" >{{goal.due_date}}</td>
                         <td class="text-center font-weight-bold" >
-                            <a class="btn btn-secondary btn-lg"  href="{% url 'update_goal' goal.id %}">Change</a>
+                            <a class="btn btn-secondary btn-lg"  href="{% url 'goal_form' goal.id %}">Change</a>
                         </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+<hr>
+<div class="container-fluid">
+    <div class="card card-body special-card">
+        <div class="display-4">Completed Goals: {{total_comp}} total
+        </div>  
+        <hr>
+        <table class="table table_id table-striped table-hover table-secondary">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center font-weight-bold" scope="col">Type</th>
+                    <th class="text-center font-weight-bold" scope="col">Descriprion</th>
+
+                    <th class="text-center font-weight-bold" scope="col">Amount</th>
+                    <th class="text-center font-weight-bold" scope="col">Date_completed</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for comp_goal in comp_goals %}
+                    <tr>
+                        <td class="text-center font-weight-bold" >{{comp_goal.category}}</td>
+                        <td class="text-center font-weight-bold" >{{comp_goal.naming}}</td>
+                        
+                        <td class="text-center font-weight-bold" >${{comp_goal.amount}}</td>
+                        <td class="text-center font-weight-bold" >{{comp_goal.due_date}}</td>
+                        
                     </tr>
                 {% endfor %}
             </tbody>
@@ -46,8 +79,6 @@
 
 
 </div>
-
-{% include 'MGMT/modals.html' %}
 
 {% endblock %}
 {% block js %}

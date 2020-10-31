@@ -48,9 +48,7 @@
 <div class="container-fluid">
     <div class="card card-body special-card">
         <div class="display-4">Records: {{total_records}} total 
-            <button type="button" class="btn btn-success btn-lg" data-toggle="modal" 
-                data-target="#RecordAddModal">Add a Record
-        </button> 
+            <a class="btn btn-success btn-lg" href="{% url 'create_record' %}">Add a Record</a>
         </div>
         <hr>
         <table class="table table_id table-striped table-hover table-secondary">
@@ -102,7 +100,7 @@
                                 {{ record.date }}
                                 </div>
                         </td>
-                        <td class="text-center font-weight-bold" ><a class="btn btn-secondary btn-lg" href="{% url 'update_record' record.id %}">Change</a></td>
+                        <td class="text-center font-weight-bold" ><a class="btn btn-secondary btn-lg" href="{% url 'record_form' record.id %}">Change</a></td>
                         
                     </tr>
                 {% endfor %}

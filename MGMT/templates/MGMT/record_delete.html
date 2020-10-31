@@ -5,18 +5,20 @@
 {% block content %}
 
 
-
-<div class="card card-body special-card" style="width: 70rem; margin: 0 auto">
-    <div class="display-3">Are you sure you want to delete " {{record}} " record?</div>
-    <hr>
-    <form action="{% url 'delete_record' record.id %}"  method="POST">
-        {% csrf_token %}
+<div class="container-fluid">
+    <div class="card card-body special-card" style="width: 70rem; margin: 0 auto">
+        <div class="display-3">Are you sure you want to delete " {{record}} " record?</div>
+        <hr>
+        <form action="{% url 'delete_record' record.id %}"  method="POST">
+            {% csrf_token %}
+            
         
-    
-        <input class="btn btn-outline-danger btn-lg" type="submit" name="Confirm">
-        <a class="btn btn-outline-secondary btn-lg" href="{% url 'record_page' %}">Cancel</a>
-    </form>
+            <input class="btn btn-outline-danger btn-lg" type="submit" name="Confirm">
+            <a class="btn btn-outline-secondary btn-lg" href="{% url 'record_page' %}">Cancel</a>
+        </form>
+    </div>
 </div>
+
 
 
 {% endblock %}

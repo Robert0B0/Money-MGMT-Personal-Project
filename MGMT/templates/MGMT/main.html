@@ -21,19 +21,16 @@
   <div class="container-fluid">
     <div class="d-flex justify-content-between">
       <div class="card special-card" style="width: 40rem; height:12rem;">
-        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" 
-                data-target="#RecordAddModal" 
-                style="height:6rem; width:40rem; font-size:2.5rem;">Add a Record
-        </button>
-        <button type="button" class="btn btn-primary btn-lg" 
-                data-toggle="modal" data-target="#GoalAddModal" 
-                style="height:3rem; width:40rem; font-size:1.25rem;">Add a Goal
-        </button>
-        <button type="button" class="btn btn-primary btn-lg" 
-                data-toggle="modal" data-target="" 
-                style="height:3rem; width:40rem; font-size:1.25rem;">Tip a Jar
-        </button> 
-      </div>
+        <a class="btn btn-success btn-lg" 
+          style="height:6rem; width:40rem; font-size:2.5rem;"
+          href="{% url 'create_record' %}">Add a Record</a>
+        <a class="btn btn-primary btn-lg" 
+          style="height:3rem; width:40rem; font-size:1.25rem;"
+          href="{% url 'create_goal' %}">Add a Goal</a>
+        <a class="btn btn-primary btn-lg" 
+          style="height:3rem; width:40rem; font-size:1.25rem;"
+          href="">Tip a Jar</a>
+       </div>
       <div class="card special-card" style="width: 38rem; height:12rem;">
         <div class="card special-card text-center">
           <a href="{% url 'user-settings' %}" class="btn btn-secondary btn-lg">

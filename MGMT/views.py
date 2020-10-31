@@ -11,12 +11,13 @@ from .decorators import allowed_users
 
 from django.db.models import Sum
 
-from .models import moneyGoals, moneyRecord, moneyUser, savingsJar
+from .models import moneyGoals, moneyRecord, moneyUser, savingsJar, completedmoneyGoals
 from .forms import RecordForm, GoalForm, CreateUserForm, SavingsForm
 from .forms import MoneyUserForm
 
 from django.db.models import Q
 from django.http import JsonResponse
+from datetime import datetime
 
 
 # ACCOUNT-SETTINGS #
@@ -108,16 +109,7 @@ def context_add(request):
         total_income = 0
 
     balance = wallet - total_expenses + total_income
-
-    user = request.user.moneyuser
-    record_form = RecordForm(initial={'user': user})
-    if request.method == 'POST':
-        record_form = RecordForm(request.POST)
-        if record_form.is_valid:
-            record_form.save()
-            
     context = {
-        'record_form': record_form,
         'records': records, 'total_records': total_records,
         'goals': goals, 'total_goals': total_goals, 'user_name': user_name,
         'balance': balance}
@@ -129,8 +121,7 @@ def context_add(request):
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins', 'money_users'])
 def homePage(request):
-    ctx = {}
-    context = {**context_add(request), **ctx}
+    context = context_add(request)
     return render(request, 'MGMT/home.html', context)
 
 
@@ -164,7 +155,7 @@ def recordPage(request):
     if total_in_other is None:
         total_in_other = 0
 
-    ctx = { 
+    ctx = {
         'total_expenses': total_expenses, 'total_upkeep': total_upkeep,
         'total_unforeseen': total_unforeseen, 'total_income': total_income,
         'total_dividents': total_dividents, 'total_in_other': total_in_other}
@@ -175,11 +166,18 @@ def recordPage(request):
 
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins', 'money_users'])
-def createRecord(request, pk):
-    ctx = {}
+def createRecord(request):
+    user = request.user.moneyuser
+    form = RecordForm(initial={'user': user})
+    if request.method == 'POST':
+        form = RecordForm(request.POST)
+        if form.is_valid:
+            form.save()
+            return redirect('/records/')
+    ctx = {'form': form}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/record_form.html', context)
+    return render(request, 'MGMT/record_create.html', context)
 
 
 @login_required(login_url='login_page')
@@ -192,7 +190,6 @@ def updateRecord(request, pk):
         if form.is_valid:
             form.save()
             return redirect('/records/')
-
     ctx = {'form': form, 'record': record}
     context = {**context_add(request), **ctx}
 
@@ -206,7 +203,6 @@ def deleteRecord(request, pk):
     if request.method == 'POST':
         record.delete()
         return redirect('/records/')
-    
     ctx = {'record': record}
     context = {**context_add(request), **ctx}
 
@@ -217,13 +213,9 @@ def deleteRecord(request, pk):
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins', 'money_users'])
 def goalsPage(request):
-    user = request.user.moneyuser
-    goal_form = GoalForm(initial={'user': user})
-    if request.method == 'POST':
-        goal_form = GoalForm(request.POST)
-        if goal_form.is_valid:
-            goal_form.save()
-    ctx = {'goal_form': goal_form}
+    comp_goals = request.user.moneyuser.completedmoneygoals_set.all()
+    total_comp = comp_goals.count()
+    ctx = {'comp_goals': comp_goals, 'total_comp': total_comp}
     context = {**context_add(request), **ctx}
 
     return render(request, 'MGMT/goals_page.html', context)
@@ -243,7 +235,7 @@ def createGoal(request):
     ctx = {'form': form}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/goal_form.html', context)
+    return render(request, 'MGMT/goal_create.html', context)
 
 
 @login_required(login_url='login_page')
@@ -256,14 +248,35 @@ def updateGoal(request, pk):
         if form.is_valid:
             form.save()
             return redirect('/goals/')
-
-    if request.method == 'POST':
-        goal.delete()
-        return redirect('/goals/')
-
     ctx = {'form': form, 'goal': goal}
     context = {**context_add(request), **ctx}
     return render(request, 'MGMT/goal_form.html', context)
+
+
+@login_required(login_url='login_page')
+@allowed_users(allowed_roles=['admins', 'money_users'])
+def completeGoal(request, pk):
+    goal = moneyGoals.objects.get(id=pk)
+    user = request.user.moneyuser
+    worth = request.user.moneyuser.worth
+    if request.method == 'POST':
+        user.worth = worth - goal.amount
+        user.save()
+        comp_goal = completedmoneyGoals(
+                    user=goal.user,
+                    naming=goal.naming,
+                    category=goal.category,
+                    amount=goal.amount,
+                    date_created=goal.date_created,
+                    due_date=datetime.today(),
+        )
+        comp_goal.save()    
+        goal.delete()
+        return redirect('/goals/')
+
+    ctx = {'goal': goal}
+    context = {**context_add(request), **ctx}
+    return render(request, 'MGMT/goal_complete.html', context)
 
 
 @login_required(login_url='login_page')
@@ -276,15 +289,6 @@ def deleteGoal(request, pk):
     ctx = {'goal': goal}
     context = {**context_add(request), **ctx}
     return render(request, 'MGMT/goal_delete.html', context)
-
-
-@login_required(login_url='login_page')
-@allowed_users(allowed_roles=['admins', 'money_users'])
-def completeGoal(request, pk):
-    goal = moneyGoals.objects.get(id=pk)
-    ctx = {'goal': goal}
-    context = {**context_add(request), **ctx}
-    return render(request, 'MGMT/goal_complete.html', context)
 
 # SAVINGS #
 
@@ -325,7 +329,7 @@ def updateSaving(request, pk):
             form.save()
             return redirect('/savings/')
 
-    ctx = {'form': form, 'jar': jar}
+    ctx = {'form': form}
     context = {**context_add(request), **ctx}
 
     return render(request, 'MGMT/savings_form.html', context)
@@ -379,9 +383,8 @@ def incomeData(request):
 
     return JsonResponse(income_data, safe=False)
 
-
 # Other #
+
 def aboutPage(request):
-    ctx = {}
-    context = {**context_add(request), **ctx}
+    context = {}
     return render(request, 'MGMT/about.html', context)
