@@ -6,15 +6,13 @@
 
 <style>
     .OutflowValue {
-        color: #8a0000;
-        font-size: 150%;
-      }
-      
-      .InflowValue {
-        color: #007a06;
-        font-size: 150%;
-      }
-</style>
+      color: #8a0000;
+  }
+    
+  .InflowValue {
+      color: #007a06;
+  }
+  </style>
 
 <div class="container-fluid">
     <div class="row">
@@ -63,54 +61,23 @@
             </thead>
             <tbody>
                 {% for record in records %}
-                    <tr>
-                        <td class="text-center font-weight-bold" >
-                            {% if record.category in 'expenses' or record.category in 'upkeep' or record.category in 'unforseen'  %}
-                                <div class="OutflowValue"> 
-                            {% else %} 
-                                <div class="InflowValue">
-                            {% endif %}
-                                {{ record.category }}
-                                </div>
-                        </td>
-                        <td class="text-center font-weight-bold" >
-                            {% if record.category in 'expenses' or record.category in 'upkeep' or record.category in 'unforseen'  %}
-                                <div class="OutflowValue"> 
-                            {% else %} 
-                                <div class="InflowValue">
-                            {% endif %}
-                                {{ record.naming }}
-                                </div>
-                        </td>
-                        <td class="text-center font-weight-bold" >
-                            {% if record.category in 'expenses' or record.category in 'upkeep' or record.category in 'unforseen'  %}
-                                <div class="OutflowValue"> 
-                            {% else %} 
-                                <div class="InflowValue">
-                            {% endif %}
-                                ${{ record.amount }}
-                                </div>
-                        </td>
-                        <td class="text-center font-weight-bold" >
-                            {% if record.category in 'expenses' or record.category in 'upkeep' or record.category in 'unforseen'  %}
-                                <div class="OutflowValue"> 
-                            {% else %} 
-                                <div class="InflowValue">
-                            {% endif %}
-                                {{ record.date }}
-                                </div>
-                        </td>
-                        <td class="text-center font-weight-bold" ><a class="btn btn-secondary btn-lg" href="{% url 'record_form' record.id %}">Change</a></td>
-                        
-                    </tr>
+                
+                {% if record.category in 'expenses' or record.category in 'upkeep' or record.category in 'unforeseen'  %}
+                    <tr class="OutflowValue"> 
+                {% else %} 
+                    <tr class="InflowValue">
+                {% endif %}
+                        ><td class="text-center font-weight-bold" >{{ record.category }}</td>
+                            <td class="text-center font-weight-bold" >{{ record.naming }} </td>
+                            <td class="text-center font-weight-bold" >${{ record.amount }}</td>
+                            <td class="text-center font-weight-bold" >{{ record.date }}</td>
+                            <td class="text-center font-weight-bold" ><a class="btn btn-secondary btn-lg" href="{% url 'record_form' record.id %}">Change</a></td>
+                        </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
-
-
-
 
 </div>
 

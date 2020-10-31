@@ -25,13 +25,10 @@ urlpatterns = [
     path('delete_goal/<str:pk>/', views.deleteGoal, name="delete_goal"),
 
     path('savings/', views.savingsPage, name="savings_page"),
-    path('saving_form/', views.createSaving, name="savings_form"),
-    path(
-        'savings_update/<str:pk>/',
-        views.updateSaving, name="update_savings"),
-    path(
-        'savings_delete/<str:pk>/',
-        views.deleteSaving, name="delete_savings"),
+    path('savings_create/', views.createSaving, name="create_savings"),
+    path('saving_form/<str:pk>/', views.updateSaving, name="savings_form"),
+    path('break_delete/<str:pk>/', views.breakSaving, name="break_savings"),
+    path('savings_delete/<str:pk>/', views.deleteSaving, name="delete_savings"),
 
     path('graph/', views.graphPage, name="graphs"),
     path('expense_data/', views.expenseData, name="expenseData"),

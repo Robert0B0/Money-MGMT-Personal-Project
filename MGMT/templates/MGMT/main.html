@@ -13,6 +13,15 @@
     <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">
 </head>
 
+<style>
+  .OutflowValue {
+    color: #8a0000;
+}
+  
+.InflowValue {
+    color: #007a06;
+}
+</style>
 
 <body>
     {% include 'MGMT/navbar.html' %}
@@ -37,7 +46,15 @@
             <div class="card-title display-4">{{request.user}}</div>
           </a>
           <hr>
-          <div class="card-title display-4">Balance: ${{balance|floatformat:2}}</div>
+
+            {% if balance <= warning  %}
+                <div class="card-title display-4 OutflowValue"> 
+            {% else %} 
+                <div class="card-title display-4 InflowValue">
+            {% endif %}
+                Balance: ${{balance|floatformat:2}}</div>
+
+
       </div>
       </div>
     </div>

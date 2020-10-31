@@ -89,6 +89,7 @@ def context_add(request):
     total_records = records.count()
     total_goals = goals.count()
     user_name = request.user.username
+    warning = request.user.moneyuser.warning_amount
     wallet = request.user.moneyuser.worth
 
     total_expenses = request.user.moneyuser.moneyrecord_set.filter(
@@ -112,7 +113,7 @@ def context_add(request):
     context = {
         'records': records, 'total_records': total_records,
         'goals': goals, 'total_goals': total_goals, 'user_name': user_name,
-        'balance': balance}
+        'balance': balance, 'warning': warning}
 
     return context
 
@@ -270,7 +271,7 @@ def completeGoal(request, pk):
                     date_created=goal.date_created,
                     due_date=datetime.today(),
         )
-        comp_goal.save()    
+        comp_goal.save() 
         goal.delete()
         return redirect('/goals/')
 
@@ -290,9 +291,8 @@ def deleteGoal(request, pk):
     context = {**context_add(request), **ctx}
     return render(request, 'MGMT/goal_delete.html', context)
 
+
 # SAVINGS #
-
-
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins', 'money_users'])
 def savingsPage(request):
@@ -312,10 +312,11 @@ def createSaving(request):
         if form.is_valid:
             form.save()
             return redirect('/savings/')
+            
     ctx = {'form': form}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/savings_form.html', context)
+    return render(request, 'MGMT/savings_create.html', context)
 
 
 @login_required(login_url='login_page')
@@ -329,7 +330,7 @@ def updateSaving(request, pk):
             form.save()
             return redirect('/savings/')
 
-    ctx = {'form': form}
+    ctx = {'form': form, 'jar': jar}
     context = {**context_add(request), **ctx}
 
     return render(request, 'MGMT/savings_form.html', context)
@@ -347,6 +348,24 @@ def deleteSaving(request, pk):
     context = {**context_add(request), **ctx}
 
     return render(request, 'MGMT/savings_delete.html', context)
+
+
+@login_required(login_url='login_page')
+@allowed_users(allowed_roles=['admins', 'money_users'])
+def breakSaving(request, pk):
+    jar = savingsJar.objects.get(id=pk)
+    user = request.user.moneyuser
+    worth = request.user.moneyuser.worth
+    if request.method == 'POST':
+        user.worth = worth + jar.amount
+        user.save()
+        jar.delete()
+        return redirect('/savings/')
+
+    ctx = {'jar': jar}
+    context = {**context_add(request), **ctx}
+
+    return render(request, 'MGMT/savings_break.html', context)
 
 
 # GRAPHS #
@@ -383,8 +402,8 @@ def incomeData(request):
 
     return JsonResponse(income_data, safe=False)
 
-# Other #
 
+# Other #
 def aboutPage(request):
     context = {}
     return render(request, 'MGMT/about.html', context)

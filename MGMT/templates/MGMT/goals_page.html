@@ -15,25 +15,25 @@
         <table class="table table_id table-striped table-hover table-secondary">
             <thead class="thead-dark">
                 <tr>
-                    <th class="text-center font-weight-bold" scope="col">Type</th>
-                    <th class="text-center font-weight-bold" scope="col">Descriprion</th>
-                    <th class="text-center font-weight-bold" scope="col">Action</th>
-                    <th class="text-center font-weight-bold" scope="col">Amount</th>
-                    <th class="text-center font-weight-bold" scope="col">Due_Date</th>
-                    <th class="text-center font-weight-bold" scope="col">Modify</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Type</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Descriprion</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Action</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Amount</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Due_Date</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Modify</th>
                 </tr>
             </thead>
             <tbody>
                 {% for goal in goals %}
                     <tr>
-                        <td class="text-center font-weight-bold" >{{goal.category}}</td>
-                        <td class="text-center font-weight-bold" >{{goal.naming}}</td>
-                        <td class="text-center font-weight-bold" >
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >{{goal.category}}</td>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >{{goal.naming}}</td>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >
                             <a class="btn btn-success btn-lg"  href="{% url 'complete_goal' goal.id %}">Complete!</a>
                         </td>
-                        <td class="text-center font-weight-bold" >${{goal.amount}}</td>
-                        <td class="text-center font-weight-bold" >{{goal.due_date}}</td>
-                        <td class="text-center font-weight-bold" >
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >${{goal.amount}}</td>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >{{goal.due_date}}</td>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >
                             <a class="btn btn-secondary btn-lg"  href="{% url 'goal_form' goal.id %}">Change</a>
                         </td>
                     </tr>
@@ -52,22 +52,22 @@
         <table class="table table_id table-striped table-hover table-secondary">
             <thead class="thead-dark">
                 <tr>
-                    <th class="text-center font-weight-bold" scope="col">Type</th>
-                    <th class="text-center font-weight-bold" scope="col">Descriprion</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Type</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Descriprion</th>
 
-                    <th class="text-center font-weight-bold" scope="col">Amount</th>
-                    <th class="text-center font-weight-bold" scope="col">Date_completed</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Amount</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Date_completed</th>
 
                 </tr>
             </thead>
             <tbody>
                 {% for comp_goal in comp_goals %}
                     <tr>
-                        <td class="text-center font-weight-bold" >{{comp_goal.category}}</td>
-                        <td class="text-center font-weight-bold" >{{comp_goal.naming}}</td>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >{{comp_goal.category}}</td>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >{{comp_goal.naming}}</td>
                         
-                        <td class="text-center font-weight-bold" >${{comp_goal.amount}}</td>
-                        <td class="text-center font-weight-bold" >{{comp_goal.due_date}}</td>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >${{comp_goal.amount}}</td>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >{{comp_goal.due_date}}</td>
                         
                     </tr>
                 {% endfor %}

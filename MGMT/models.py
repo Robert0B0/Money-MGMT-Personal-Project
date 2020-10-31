@@ -10,6 +10,7 @@ class moneyUser(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True, default='Username')
     worth = models.DecimalField(null=False, max_digits=7, decimal_places=2, default=10.00)
+    warning_amount = models.DecimalField(null=False, max_digits=7, decimal_places=2, default=10.00)
     email = models.EmailField(max_length=200, null=True, default='mail@mail.mail')
     profile_pic = models.ImageField(default="profile-default.png", null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
@@ -91,7 +92,7 @@ class savingsJar(models.Model):
     naming = models.CharField(max_length=200, null=False, blank=True, default="Savings-Jar")
     desired_amount = models.DecimalField(null=False, max_digits=10, decimal_places=2, default=0)
     amount = models.DecimalField(null=False, max_digits=10, decimal_places=2, default=0)
-    date_created = models.DateTimeField(auto_now_add=False, null=True)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
         return str(self.naming)

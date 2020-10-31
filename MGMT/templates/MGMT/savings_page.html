@@ -8,30 +8,31 @@
 <div class="container-fluid">
     <div class="card card-body special-card">
         <div class="display-4">Saving Jars  
-            <a class="btn btn-outline-primary btn-lg" href="{% url 'savings_form' %}">Add a Jar</a> 
+            <a class="btn btn-outline-primary btn-lg" href="{% url 'create_savings' %}">Add a Jar</a> 
         </div>
         <hr>
         <table class="table table_id table-striped table-hover table-secondary">
             <thead class="thead-dark">
                 <tr>
-                    <th class="text-center font-weight-bold" scope="col">Name</th>
-                    <th class="text-center font-weight-bold" scope="col">Amount</th>
-                    <th class="text-center font-weight-bold" scope="col">Deposit</th>
-                    <th class="text-center font-weight-bold" scope="col">Desired_amount</th>
-                    <th class="text-center font-weight-bold" scope="col">Modify</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Name</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Current Amount</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Target_amount</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Modify</th>
                 </tr>
             </thead>
             <tbody>
                 {% for jar in jars %}
                     <tr>
-                        <td class="text-center font-weight-bold" >{{jar.naming}}</td>
-                        <td class="text-center font-weight-bold" >${{jar.amount}}</td>
-                        <td class="text-center font-weight-bold">
-                            <a class="btn btn-outline-primary btn-lg disabled"  href="">Tip Jar</a>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >{{jar.naming}}</td>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >${{jar.amount}}
+                            <a class="btn btn-primary btn-lg disabled" style="font-size: 150%;"  
+                                href="">Tip Jar</a>
+                            <a class="btn btn-outline-warning btn-lg" style="font-size: 150%;"  
+                                href="{% url 'break_savings' jar.id %}">Break Jar</a>
                         </td>
-                        <td class="text-center font-weight-bold" >{{jar.desired_amount}}</td>
-                        <td class="text-center font-weight-bold">
-                            <a class="btn btn-secondary btn-lg"  href="{% url 'update_savings' jar.id %}">Change</a>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;" >{{jar.desired_amount}}</td>
+                        <td class="text-center font-weight-bold" style="font-size: 150%;">
+                            <a class="btn btn-secondary btn-lg"  href="{% url 'savings_form' jar.id %}">Change</a>
                         </td>
                             
                         
@@ -44,7 +45,6 @@
     
 </div>
 
-{% include 'MGMT/modals.html' %}
 
 {% endblock %}
 {% block js %}

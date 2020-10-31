@@ -1,0 +1,20 @@
+{% extends 'MGMT/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="card card-body special-card" style="width: 70rem; margin: 0 auto">
+    <div class="display-4">Are you sure you want to break " {{jar}} "  Savings Jar?</div>
+    <div class="display-4">Doing so will add all the jar's founds ( ${{jar.amount}} ) to your balance and remove the jar</div>
+    <hr>
+    <form action="{% url 'break_savings' jar.id %}"  method="POST">
+        {% csrf_token %}
+        <input class="btn btn-outline-danger btn-lg" type="submit" name="Confirm">
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'savings_page' %}">Cancel</a>
+    </form>
+</div>
+
+
+
+{% endblock %}
