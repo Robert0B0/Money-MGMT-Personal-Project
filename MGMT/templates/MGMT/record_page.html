@@ -52,11 +52,11 @@
         <table class="table table_id table-striped table-hover table-secondary">
             <thead class="thead-dark">
                 <tr>
-                    <th class="text-center font-weight-bold" scope="col">Type</th>
-                    <th class="text-center font-weight-bold" scope="col">Descriprion</th>
-                    <th class="text-center font-weight-bold" scope="col">Amount</th>
-                    <th class="text-center font-weight-bold" scope="col">Date</th>
-                    <th class="text-center font-weight-bold" scope="col">Modify</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Type</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Descriprion</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Amount</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Date</th>
+                    <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Modify</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,11 +67,11 @@
                 {% else %} 
                     <tr class="InflowValue">
                 {% endif %}
-                        ><td class="text-center font-weight-bold" >{{ record.category }}</td>
-                            <td class="text-center font-weight-bold" >{{ record.naming }} </td>
-                            <td class="text-center font-weight-bold" >${{ record.amount }}</td>
-                            <td class="text-center font-weight-bold" >{{ record.date }}</td>
-                            <td class="text-center font-weight-bold" ><a class="btn btn-secondary btn-lg" href="{% url 'record_form' record.id %}">Change</a></td>
+                        >   <td class="text-center font-weight-bold" style="font-size: 150%;" >{{ record.category }}</td>
+                            <td class="text-center font-weight-bold" style="font-size: 150%;" >{{ record.naming }} </td>
+                            <td class="text-center font-weight-bold" style="font-size: 150%;" >${{ record.amount }}</td>
+                            <td class="text-center font-weight-bold" style="font-size: 150%;" >{{ record.date }}</td>
+                            <td class="text-center font-weight-bold" style="font-size: 150%;" ><a class="btn btn-secondary btn-lg" href="{% url 'record_form' record.id %}">Change</a></td>
                         </tr>
                 {% endfor %}
             </tbody>
