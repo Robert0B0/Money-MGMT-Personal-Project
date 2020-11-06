@@ -5,8 +5,8 @@ html {
 
 body {
     position: relative;
-    background: url("/static/images/finances-4.jpg") fixed;
-    
+    background: url("/static/images/finances-4-blrd.jpg") fixed; 
+
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -19,7 +19,7 @@ body {
 }
 
 .special-card {
-        background-color: rgb(228, 228, 228);
+        background-color: rgb(255, 255, 255);
         opacity: .9;
 }
 

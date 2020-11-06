@@ -1,0 +1,43 @@
+{% extends 'MGMT/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+
+<div class="container-fluid">
+    <div class="card card-body special-card" style="width: 40rem; margin: 0 auto">
+        <div class="display-4">Monetary Record: {{record.naming}}: {{record}}</div>
+        <hr>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div style="display: none;">
+                {{ form.user }}
+            </div>
+            <div class="card card-body special-card">
+                <div class="" style="font-size: 30px;">Naming: {{ form.naming }}</div>
+                <hr>
+                <div class="" style="font-size: 30px;">Category: {{ form.category }}</div>
+                <hr>
+                <div class="" style="font-size: 30px;">Amount: {{ form.amount }}</div>
+                <hr>
+                <div class="" style="font-size: 30px;">Date: {{ form.date }}</div>
+                <hr>
+
+            </div>
+            <input class="btn btn-primary btn-lg" type="submit" name="Submit">
+            <a class="btn btn-outline-secondary btn-lg" href="{% url 'record_page' %}">Cancel</a>
+            <a class="btn btn-danger btn-lg" style="margin-left: 240px !important;" 
+                href="{% url 'delete_record' record.id %}">Delete Record
+            </a>
+            
+        </form>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

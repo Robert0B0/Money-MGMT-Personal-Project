@@ -4,7 +4,6 @@
 <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
 <div class="container-fluid">
     <div class="card special-card">
         <div class="card-body special-card">
@@ -45,45 +44,25 @@
         </div>
         
     </div>
-    
+
 </div>
 
-<script>
 
-    var expenses_state = {
-        'dates':[],
-        'amounts':[],
-    }
- 
-    var dataURL = `/expense_data/`
-    $.ajax({
-        method:'GET',
-        url:dataURL,
-        success:function(response){
-            console.log('RESPONSE:', response)
-            for (var i in response) {
+<script type="text/javascript" >
 
-                var key = Object.keys(response[i])[0]
-                var value = Object.values(response[i])[0]
+    var expense_dates = JSON.parse("{{expenses_dates|escapejs}}");
+    var expense_values = JSON.parse("{{expenses_values|escapejs}}");
 
-                expenses_state.dates.push(key)
-                expenses_state.amounts.push(value)
-            }
-
-            console.log('STATE:', expenses_state)
-            buildExpensesChart()
-        }
-    })
-
+    buildExpensesChart()
     function buildExpensesChart(){
         var chartData = {
             "type":"bar",
             "scale-x":{
-                "values": expenses_state.dates
+                "values": expense_dates
             },
             "series":[
                 {
-                    "values": expenses_state.amounts 
+                    "values": expense_values 
                 }
             ]
         }
@@ -95,41 +74,19 @@
     } 
 
 
-    
-    var income_state = {
-        'dates':[],
-        'amounts':[],
-    }
- 
-    var dataURL = `/income_data/`
-    $.ajax({
-        method:'GET',
-        url:dataURL,
-        success:function(response){
-            console.log('RESPONSE:', response)
-            for (var i in response) {
+    var income_dates = JSON.parse("{{income_dates|escapejs}}");
+    var income_values = JSON.parse("{{income_values|escapejs}}");
 
-                var key = Object.keys(response[i])[0]
-                var value = Object.values(response[i])[0]
-
-               income_state.dates.push(key)
-               income_state.amounts.push(value)
-            }
-
-            console.log('STATE:', income_state)
-            buildIncomeChart()
-        }
-    })
-
+    buildIncomeChart()
     function buildIncomeChart(){
         var chartData = {
             "type":"bar",
             "scale-x":{
-                "values": income_state.dates
+                "values": income_dates
             },
             "series":[
                 {
-                    "values": income_state.amounts 
+                    "values": income_values 
                 }
             ]
         }
@@ -139,8 +96,8 @@
             data: chartData,
         });
     } 
-    
-    
+
+
     
 
 </script>

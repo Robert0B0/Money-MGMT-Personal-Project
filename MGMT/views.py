@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.template.loader import render_to_string
 
 from .decorators import unauthenticated_user
 from .decorators import allowed_users
@@ -17,7 +18,11 @@ from .forms import MoneyUserForm
 
 from django.db.models import Q
 from django.http import JsonResponse
+import json
 from datetime import datetime
+
+from bootstrap_modal_forms.generic import BSModalCreateView
+from django.urls import reverse_lazy
 
 
 # ACCOUNT-SETTINGS #
@@ -45,7 +50,7 @@ def registerPage(request):
             # messages.success(request, 'Account was created for ' + username)
             # return redirect('login_page')
     context = {'form': form}
-    return render(request, 'MGMT/register.html', context)
+    return render(request, 'MGMT/User_Interactions/register.html', context)
 
 
 @unauthenticated_user
@@ -60,7 +65,7 @@ def loginPage(request):
         else:
             messages.info(request, 'Username OR Password is incorrect.')
     context = {}
-    return render(request, 'MGMT/login.html', context)
+    return render(request, 'MGMT/User_Interactions/login.html', context)
 
 
 def logoutUser(request):
@@ -79,7 +84,7 @@ def settingsPage(request):
             form.save()
     ctx = {'form': form}
     context = {**context_add(request), **ctx}
-    return render(request, 'MGMT/user_settings.html', context)
+    return render(request, 'MGMT/User_Interactions/user_settings.html', context)
 
 
 # Global #
@@ -115,6 +120,7 @@ def context_add(request):
         'goals': goals, 'total_goals': total_goals, 'user_name': user_name,
         'balance': balance, 'warning': warning}
 
+
     return context
 
 
@@ -122,8 +128,9 @@ def context_add(request):
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins', 'money_users'])
 def homePage(request):
+
     context = context_add(request)
-    return render(request, 'MGMT/home.html', context)
+    return render(request, 'MGMT/User_Interactions/home.html', context)
 
 
 # MONETARY Record #
@@ -162,8 +169,23 @@ def recordPage(request):
         'total_dividents': total_dividents, 'total_in_other': total_in_other}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/record_page.html', context)
+    return render(request, 'MGMT/Records/record_page.html', context)
 
+
+# @login_required(login_url='login_page')
+# @allowed_users(allowed_roles=['admins', 'money_users'])
+# def createRecord(request):
+#     user = request.user.moneyuser
+#     form = RecordForm(initial={'user': user})
+#     if request.method == 'POST':
+#         form = RecordForm(request.POST)
+#         if form.is_valid:
+#             form.save()
+#             return redirect('/records/')
+#     ctx = {'form': form}
+#     context = {**context_add(request), **ctx}
+#     html_form = render_to_string('MGMT/Records/record_create.html', context, request=request)
+#     return JsonResponse(html_form)
 
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins', 'money_users'])
@@ -178,7 +200,7 @@ def createRecord(request):
     ctx = {'form': form}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/record_create.html', context)
+    return render(request, 'MGMT/Records/record_create.html', context)
 
 
 @login_required(login_url='login_page')
@@ -194,7 +216,7 @@ def updateRecord(request, pk):
     ctx = {'form': form, 'record': record}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/record_form.html', context)
+    return render(request, 'MGMT/Records/record_form.html', context)
 
 
 @login_required(login_url='login_page')
@@ -207,7 +229,7 @@ def deleteRecord(request, pk):
     ctx = {'record': record}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/record_delete.html', context)
+    return render(request, 'MGMT/Records/record_delete.html', context)
 
 
 # GOALS #
@@ -219,7 +241,7 @@ def goalsPage(request):
     ctx = {'comp_goals': comp_goals, 'total_comp': total_comp}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/goals_page.html', context)
+    return render(request, 'MGMT/Goals/goals_page.html', context)
 
 
 @login_required(login_url='login_page')
@@ -236,7 +258,7 @@ def createGoal(request):
     ctx = {'form': form}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/goal_create.html', context)
+    return render(request, 'MGMT/Goals/goal_create.html', context)
 
 
 @login_required(login_url='login_page')
@@ -251,7 +273,7 @@ def updateGoal(request, pk):
             return redirect('/goals/')
     ctx = {'form': form, 'goal': goal}
     context = {**context_add(request), **ctx}
-    return render(request, 'MGMT/goal_form.html', context)
+    return render(request, 'MGMT/Goals/goal_form.html', context)
 
 
 @login_required(login_url='login_page')
@@ -277,7 +299,7 @@ def completeGoal(request, pk):
 
     ctx = {'goal': goal}
     context = {**context_add(request), **ctx}
-    return render(request, 'MGMT/goal_complete.html', context)
+    return render(request, 'MGMT/Goals/goal_complete.html', context)
 
 
 @login_required(login_url='login_page')
@@ -289,7 +311,7 @@ def deleteGoal(request, pk):
         return redirect('/goals/')
     ctx = {'goal': goal}
     context = {**context_add(request), **ctx}
-    return render(request, 'MGMT/goal_delete.html', context)
+    return render(request, 'MGMT/Goals/goal_delete.html', context)
 
 
 # SAVINGS #
@@ -299,7 +321,7 @@ def savingsPage(request):
     jars = request.user.moneyuser.savingsjar_set.all()
     ctx = {'jars': jars}
     context = {**context_add(request), **ctx}
-    return render(request, 'MGMT/savings_page.html', context)
+    return render(request, 'MGMT/Savings/savings_page.html', context)
 
 
 @login_required(login_url='login_page')
@@ -316,7 +338,7 @@ def createSaving(request):
     ctx = {'form': form}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/savings_create.html', context)
+    return render(request, 'MGMT/Savings/savings_create.html', context)
 
 
 @login_required(login_url='login_page')
@@ -333,7 +355,7 @@ def updateSaving(request, pk):
     ctx = {'form': form, 'jar': jar}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/savings_form.html', context)
+    return render(request, 'MGMT/Savings/savings_form.html', context)
 
 
 @login_required(login_url='login_page')
@@ -347,7 +369,7 @@ def deleteSaving(request, pk):
     ctx = {'jar': jar}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/savings_delete.html', context)
+    return render(request, 'MGMT/Savings/savings_delete.html', context)
 
 
 @login_required(login_url='login_page')
@@ -365,45 +387,50 @@ def breakSaving(request, pk):
     ctx = {'jar': jar}
     context = {**context_add(request), **ctx}
 
-    return render(request, 'MGMT/savings_break.html', context)
+    return render(request, 'MGMT/Savings/savings_break.html', context)
 
 
 # GRAPHS #
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins', 'money_users'])
 def graphPage(request):
-    ctx = {}
-    context = {**context_add(request), **ctx}
-    return render(request, 'MGMT/graph.html', context)
-
-
-def expenseData(request):
-    expenses_data = []
-    expenses = request.user.moneyuser.moneyrecord_set.all().filter(
-        Q(category='expenses') | Q(category='upkeep') | 
-        Q(category='unforeseen')
-    ).order_by('date')
-
-    for i in expenses:
-        expenses_data.append({i.date.strftime('%m/%d/%Y'): float(i.amount)})
-
-    return JsonResponse(expenses_data, safe=False)
-
-
-def incomeData(request):
-    income_data = []
+    income_dates = []
+    income_values = []
     incomes = request.user.moneyuser.moneyrecord_set.all().filter(
         Q(category='monthly income') | Q(category='dividents') |
         Q(category='other')    
     ).order_by('date')
     
     for i in incomes:
-        income_data.append({(i.date.strftime('%m/%d/%Y') + ' ' + i.naming): float(i.amount)})
+        income_dates.append(i.date.strftime('%m/%d/%Y'))
+        income_values.append(float(i.amount))
 
-    return JsonResponse(income_data, safe=False)
+    in_datesJSON = json.dumps(income_dates)
+    in_valuesJSON = json.dumps(income_values) 
+
+    
+    expenses_dates = []
+    expenses_values = []
+    expenses = request.user.moneyuser.moneyrecord_set.all().filter(
+        Q(category='expenses') | Q(category='upkeep') | 
+        Q(category='unforeseen')
+    ).order_by('date')
+
+    for i in expenses:
+        expenses_dates.append(json.dumps(i.date.strftime('%m/%d/%Y'))) 
+        expenses_values.append(float(i.amount))
+
+    ex_datesJSON = json.dumps(expenses_dates)
+    ex_valuesJSON = json.dumps(expenses_values)
+
+    ctx = {'income_dates': in_datesJSON, 'income_values': in_valuesJSON,
+        'expenses_dates': ex_datesJSON, 'expenses_values': ex_valuesJSON}
+    context = {**context_add(request), **ctx}
+    return render(request, 'MGMT/Graphs/graph.html', context)
+
 
 
 # Other #
 def aboutPage(request):
     context = {}
-    return render(request, 'MGMT/about.html', context)
+    return render(request, 'MGMT/Other/about.html', context)

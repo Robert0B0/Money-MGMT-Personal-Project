@@ -31,9 +31,6 @@ urlpatterns = [
     path('savings_delete/<str:pk>/', views.deleteSaving, name="delete_savings"),
 
     path('graph/', views.graphPage, name="graphs"),
-    path('expense_data/', views.expenseData, name="expenseData"),
-    path('income_data/', views.incomeData, name="incomeData"),
-    # path('savings_data/', views.savingsData, name="savingsData"),
 
     path('about/', views.aboutPage, name="about"),
 
