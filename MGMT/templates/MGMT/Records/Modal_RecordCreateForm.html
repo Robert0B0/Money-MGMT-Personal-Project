@@ -1,0 +1,74 @@
+<!--Add Record Modal-->
+<div class="modal fade" id="RecordAddModal" tabindex="-1" role="dialog" aria-labelledby="RecordAddModal" aria-hidden="true">
+<form method="POST" action="{% url 'create_record_modal' %}" class="js-record-create-form">
+  {% csrf_token %}
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Add a Record</h4>
+  </div>
+  <div class="modal-body">
+    <div style="display: none;">
+      {{ form.user }}
+  </div>
+  <div class="card card-body special-card">
+      <div class="" style="font-size: 20px;">Naming: {{ form.naming }}</div>
+      <hr>
+      <div class="" style="font-size: 20px;">Category: {{ form.category }}</div>
+      <hr>
+      <div class="" style="font-size: 20px;">Amount: {{ form.amount }}</div>
+      <hr>
+      <div class="" style="font-size: 20px;">Date: {{ form.date }}</div>
+      <hr>
+  </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary">Create book</button>
+  </div>
+</form>
+</div>
+
+
+
+<!--
+<div class="modal fade" id="RecordAddModal" tabindex="-1" role="dialog" aria-labelledby="RecordAddModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form action="{% url 'create_record_modal' %}" method="POST" class="js-create-record">
+      {% csrf_token %}
+      <div class="modal-content special-card">
+          <div class="modal-header">
+            <h5 class="modal-title" id="RecordAddModalTitle">Add a Monetary Record</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div style="display: none;">
+              {{ create_record_form.user }}
+          </div>
+          <div class="card card-body special-card">
+              <div class="" style="font-size: 20px;">Naming: {{ create_record_form.naming }}</div>
+              <hr>
+              <div class="" style="font-size: 20px;">Category: {{ create_record_form.category }}</div>
+              <hr>
+              <div class="" style="font-size: 20px;">Amount: {{ create_record_form.amount }}</div>
+              <hr>
+              <div class="" style="font-size: 20px;">Date: {{ create_record_form.date }}</div>
+              <hr>
+          </div>
+          <input class="btn btn-primary btn-lg" type="submit" name="Submit">
+          <button type="button" class="btn btn-outline-secondary btn-lg" data-dismiss="modal">Cancel</button>
+          </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+ <script>
+//   var form_options = { target: '#RecordAddModal', success: function(response) {} };
+//   $('#create_record_modal').ajaxForm(form_options);
+ </script>
+-->
+

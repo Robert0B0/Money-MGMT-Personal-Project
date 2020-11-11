@@ -18,11 +18,13 @@ from .forms import MoneyUserForm
 
 from django.db.models import Q
 from django.http import JsonResponse
+from django.views.generic import UpdateView, ListView
 import json
 from datetime import datetime
 
 from bootstrap_modal_forms.generic import BSModalCreateView
 from django.urls import reverse_lazy
+from decimal import Decimal
 
 
 # ACCOUNT-SETTINGS #
@@ -46,7 +48,7 @@ def registerPage(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('home')
+            return redirect('user-settings')
             # messages.success(request, 'Account was created for ' + username)
             # return redirect('login_page')
     context = {'form': form}
@@ -89,6 +91,7 @@ def settingsPage(request):
 
 # Global #
 def context_add(request):
+    #records = request.user.moneyuser.moneyrecord_set.all().order_by('date_created)
     records = request.user.moneyuser.moneyrecord_set.all()
     goals = request.user.moneyuser.moneygoals_set.all()
     total_records = records.count()
@@ -115,12 +118,12 @@ def context_add(request):
         total_income = 0
 
     balance = wallet - total_expenses + total_income
+
     context = {
         'records': records, 'total_records': total_records,
         'goals': goals, 'total_goals': total_goals, 'user_name': user_name,
-        'balance': balance, 'warning': warning}
-
-
+        'balance': balance, 'warning': warning,
+        }
     return context
 
 
@@ -163,41 +166,29 @@ def recordPage(request):
     if total_in_other is None:
         total_in_other = 0
 
+
     ctx = {
         'total_expenses': total_expenses, 'total_upkeep': total_upkeep,
         'total_unforeseen': total_unforeseen, 'total_income': total_income,
-        'total_dividents': total_dividents, 'total_in_other': total_in_other}
+        'total_dividents': total_dividents, 'total_in_other': total_in_other
+        
+        }
     context = {**context_add(request), **ctx}
 
     return render(request, 'MGMT/Records/record_page.html', context)
 
 
-# @login_required(login_url='login_page')
-# @allowed_users(allowed_roles=['admins', 'money_users'])
-# def createRecord(request):
-#     user = request.user.moneyuser
-#     form = RecordForm(initial={'user': user})
-#     if request.method == 'POST':
-#         form = RecordForm(request.POST)
-#         if form.is_valid:
-#             form.save()
-#             return redirect('/records/')
-#     ctx = {'form': form}
-#     context = {**context_add(request), **ctx}
-#     html_form = render_to_string('MGMT/Records/record_create.html', context, request=request)
-#     return JsonResponse(html_form)
-
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins', 'money_users'])
 def createRecord(request):
     user = request.user.moneyuser
-    form = RecordForm(initial={'user': user})
+    create_record_form = RecordForm(initial={'user': user})
     if request.method == 'POST':
-        form = RecordForm(request.POST)
-        if form.is_valid:
-            form.save()
+        create_record_form = RecordForm(request.POST)
+        if create_record_form.is_valid:
+            create_record_form.save()
             return redirect('/records/')
-    ctx = {'form': form}
+    ctx = {'create_record_form': create_record_form}
     context = {**context_add(request), **ctx}
 
     return render(request, 'MGMT/Records/record_create.html', context)
@@ -207,13 +198,13 @@ def createRecord(request):
 @allowed_users(allowed_roles=['admins', 'money_users'])
 def updateRecord(request, pk):
     record = moneyRecord.objects.get(id=pk)
-    form = RecordForm(instance=record)
+    update_record_form = RecordForm(instance=record)
     if request.method == 'POST':
-        form = RecordForm(request.POST, instance=record)
-        if form.is_valid:
-            form.save()
+        update_record_form = RecordForm(request.POST, instance=record)
+        if update_record_form.is_valid:
+            update_record_form.save()
             return redirect('/records/')
-    ctx = {'form': form, 'record': record}
+    ctx = {'update_record_form': update_record_form, 'record': record}
     context = {**context_add(request), **ctx}
 
     return render(request, 'MGMT/Records/record_form.html', context)
@@ -223,7 +214,14 @@ def updateRecord(request, pk):
 @allowed_users(allowed_roles=['admins', 'money_users'])
 def deleteRecord(request, pk):
     record = moneyRecord.objects.get(id=pk)
+    user = request.user.moneyuser
+    worth = request.user.moneyuser.worth
     if request.method == 'POST':
+        if record.category in 'expenses' or record.category in 'upkeep' or record.category in 'unforeseen':
+            user.worth = worth - record.amount
+        else:
+            user.worth = worth + record.amount
+        user.save()
         record.delete()
         return redirect('/records/')
     ctx = {'record': record}
@@ -238,9 +236,12 @@ def deleteRecord(request, pk):
 def goalsPage(request):
     comp_goals = request.user.moneyuser.completedmoneygoals_set.all()
     total_comp = comp_goals.count()
+    
+    
+    
     ctx = {'comp_goals': comp_goals, 'total_comp': total_comp}
     context = {**context_add(request), **ctx}
-
+    
     return render(request, 'MGMT/Goals/goals_page.html', context)
 
 
@@ -319,7 +320,9 @@ def deleteGoal(request, pk):
 @allowed_users(allowed_roles=['admins', 'money_users'])
 def savingsPage(request):
     jars = request.user.moneyuser.savingsjar_set.all()
-    ctx = {'jars': jars}
+    total_savings = jars.count()
+
+    ctx = {'jars': jars, 'total_savings': total_savings}
     context = {**context_add(request), **ctx}
     return render(request, 'MGMT/Savings/savings_page.html', context)
 
@@ -390,6 +393,53 @@ def breakSaving(request, pk):
     return render(request, 'MGMT/Savings/savings_break.html', context)
 
 
+@login_required(login_url='login_page')
+@allowed_users(allowed_roles=['admins', 'money_users'])
+def tipSaving(request, pk):
+    jar = savingsJar.objects.get(id=pk)
+    user = request.user.moneyuser
+    worth = request.user.moneyuser.worth
+    jar_amount = jar.amount
+    tip = 10
+    if request.method == 'POST':
+        tip = request.POST.get('tip-value')
+        user.worth = worth - Decimal(tip)
+        user.save()
+        jar.amount = jar_amount + Decimal(tip)
+        jar.save()
+        return redirect('/savings/')
+
+    ctx = {'tip': tip, 'jar': jar}
+    context = {**context_add(request), **ctx}
+
+    return render(request, 'MGMT/Savings/savings_tip.html', context)
+
+
+@login_required(login_url='login_page')
+@allowed_users(allowed_roles=['admins', 'money_users'])
+def tipAllSavings(request):
+    jars = request.user.moneyuser.savingsjar_set.all()
+    jar_all = Decimal(jars.count())
+    user = request.user.moneyuser
+    worth = request.user.moneyuser.worth
+    tip = 10
+    if request.method == 'POST':
+        tip = request.POST.get('tip-value')
+        user.worth = worth - Decimal(tip)
+        user.save()
+        tip_ration = (Decimal(tip) / jar_all)
+        for jar in jars:
+            jar_amount = jar.amount
+            jar.amount = jar_amount + tip_ration
+            jar.save()
+        return redirect('/savings/')
+
+    ctx = {'tip': tip, 'jars': jars, 'jar_all': jar_all}
+    context = {**context_add(request), **ctx}
+
+    return render(request, 'MGMT/Savings/savings_tip_all.html', context)
+
+
 # GRAPHS #
 @login_required(login_url='login_page')
 @allowed_users(allowed_roles=['admins', 'money_users'])
@@ -429,8 +479,28 @@ def graphPage(request):
     return render(request, 'MGMT/Graphs/graph.html', context)
 
 
+# Investments 
+@login_required(login_url='login_page')
+@allowed_users(allowed_roles=['admins', 'money_users'])
+def investmentsPage(request):
+    investments = request.user.moneyuser.growthinvestment_set.all()
+    total_invs = investments.count()
+
+    #  predicted = investments.current_amount * investments.rate * investments.time_length;
+    predicted = 1000
+
+    ctx = {'investments': investments, 'predicted': predicted, 'total_invs': total_invs}
+    context = {**context_add(request), **ctx}
+    return render(request, 'MGMT/Investments/investments_page.html', context)
+
 
 # Other #
 def aboutPage(request):
     context = {}
     return render(request, 'MGMT/Other/about.html', context)
+
+
+def bugsPage(request):
+
+    context = {}
+    return render(request, 'MGMT/Other/bug_report.html', context)

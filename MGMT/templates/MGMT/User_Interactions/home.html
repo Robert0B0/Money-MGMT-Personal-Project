@@ -1,6 +1,7 @@
 {% extends 'MGMT/main.html' %}
 
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 
@@ -8,58 +9,106 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xl">
-            <div class="card card-body special-card text-center">
-                <a class="btn btn-secondary btn-lg" href="{% url 'record_page' %}">
-                    <div class="display-4">Records: {{total_records}} total</div>
-                </a>
+            <div class="card card-body special-card text-left">
+                <h1 style="text-align:left">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-receipt-cutoff" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v13h-1V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0l-.509-.51L2 2.118V15H1V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27zM0 15.5a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z"/>
+                        <path fill-rule="evenodd" d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-8a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"/>
+                      </svg>
+                    Records: {{total_records}} this week</h1>
+                <h1 style="text-align:left">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-receipt-cutoff" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v13h-1V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0l-.509-.51L2 2.118V15H1V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27zM0 15.5a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z"/>
+                        <path fill-rule="evenodd" d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-8a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"/>
+                      </svg>
+                    Records: {{total_records}} this month</h1>
              </div>
             <div class="card card-body special-card">
                 <table class="table table_id table-striped table-hover table-secondary">
                     <thead class="thead-dark">
                         <tr>
-                            <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Descriprion</th>
-                            <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Amount</th>
-                            <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Date</th>
+                            <th class="text-left font-weight-bold" style="font-size: 150%;" scope="col">Descriprion</th>
+                            <th class="text-left font-weight-bold" style="font-size: 150%;" scope="col">Amount</th>
+                            <th class="text-left font-weight-bold" style="font-size: 150%;" scope="col">Date Added</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for record in records %}
                         {% if record.category in 'expenses' or record.category in 'upkeep' or record.category in 'unforeseen'  %}
                             <tr class="OutflowValue"> 
+                                
                         {% else %} 
                                 <tr class="InflowValue">
                         {% endif %}
-                            ><td class="text-center font-weight-bold" style="font-size: 150%;" >{{record.naming}}</td>
-                                <td class="text-center font-weight-bold" style="font-size: 150%;" >€{{record.amount}}</td>
-                                <td class="text-center font-weight-bold" style="font-size: 150%;" >{{record.date}}</td>
+                            >   <td class="text-left font-weight-bold" style="font-size: 150%;" >
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-receipt-cutoff" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v13h-1V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0l-.509-.51L2 2.118V15H1V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27zM0 15.5a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z"/>
+                                    <path fill-rule="evenodd" d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-8a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"/>
+                                  </svg>
+                                {{record.naming}}</td>
+                                <td class="text-left font-weight-bold" style="font-size: 150%;" >€{{record.amount|intcomma}}</td>
+                                <td class="text-left font-weight-bold" style="font-size: 150%;" >{{ record.date.day }}, {{ record.date.month }}, {{ record.date.year }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="card card-body special-card">
-                <a class="btn btn-secondary btn-lg" href="{% url 'goals_page' %}">
-                    <div class="display-4">Goals: {{total_goals}} total</div>
-                </a>
+                <h1 ><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trophy-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935z"/>
+                    </svg> 
+                    Goals: {{total_goals}} total
+                </h1>
+            </div>
+            <div class="card card-body special-card">
+                <table class="table table_id table-striped table-hover table-secondary">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="text-left font-weight-bold" style="font-size: 150%;" scope="col">Descriprion</th>
+                            <th class="text-left font-weight-bold" style="font-size: 150%;" scope="col">Amount</th>
+                            <th class="text-left font-weight-bold" style="font-size: 150%;" scope="col">Due_Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for goal in goals %}
+                            <tr> 
+                                <td class="text-left font-weight-bold" style="font-size: 150%;" >
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trophy-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935z"/>
+                                      </svg>
+                                    {{goal.naming}}</td>
+                                <td class="text-left font-weight-bold" style="font-size: 150%;" >${{goal.amount|intcomma}}</td>
+                                <td class="text-left font-weight-bold" style="font-size: 150%;" >{{goal.due_date.day}}, {{goal.due_date.month}}, {{goal.due_date.year}}, </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    
+                </table>
+            </div>
+            <hr>
+            <div class="card card-body special-card">
+                <h1 >
+                Investments: {{total_goals}} total</h1>
+               
                 
             </div>
             <div class="card card-body special-card">
                 <table class="table table_id table-striped table-hover table-secondary">
                     <thead class="thead-dark">
                         <tr>
-                            <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Descriprion</th>
-                            <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Amount</th>
-                            <th class="text-center font-weight-bold" style="font-size: 150%;" scope="col">Due_Date</th>
+                            <th class="text-left font-weight-bold" style="font-size: 150%;" scope="col">Descriprion</th>
+                            <th class="text-left font-weight-bold" style="font-size: 150%;" scope="col">Amount</th>
+                            <th class="text-left font-weight-bold" style="font-size: 150%;" scope="col">Due_Date</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for goal in goals %}
                             <tr>
-                                <td class="text-center font-weight-bold" style="font-size: 150%;" >{{goal.naming}}</td>
-                                <td class="text-center font-weight-bold" style="font-size: 150%;" >${{goal.amount}}</td>
-                                <td class="text-center font-weight-bold" style="font-size: 150%;" >{{goal.due_date}}</td>
+                                <td class="text-left font-weight-bold" style="font-size: 150%;" >{{goal.naming}}</td>
+                                <td class="text-left font-weight-bold" style="font-size: 150%;" >${{goal.amount|intcomma}}</td>
+                                <td class="text-left font-weight-bold" style="font-size: 150%;" >{{goal.due_date}}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
